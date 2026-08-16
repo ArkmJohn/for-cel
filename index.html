@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Our Journey — Happy Birthday, Cel</title>
+  <title>Our Journey - Happy Birthday, Cel</title>
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -174,9 +174,9 @@
     }
 
     @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      20%, 60% { transform: translateX(-8px); }
-      40%, 80% { transform: translateX(8px); }
+      0%, 100% { transform: translate3d(0, 0, 0); }
+      20%, 60% { transform: translate3d(-8px, 0, 0); }
+      40%, 80% { transform: translate3d(8px, 0, 0); }
     }
 
     .shake {
@@ -199,7 +199,7 @@
     .hero-content {
       max-width: 750px;
       opacity: 0;
-      transform: translateY(30px);
+      transform: translate3d(0, 30px, 0);
       animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
@@ -231,7 +231,7 @@
       position: absolute;
       bottom: 30px;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translate3d(-50%, 0, 0);
       animation: bounce 2s infinite;
       color: var(--red-accent);
       cursor: pointer;
@@ -279,9 +279,10 @@
       height: 420px;
       margin: 20px auto;
       perspective: 1000px;
+      touch-action: pan-y; /* Keeps dynamic vertical layout scrolling functional */
     }
 
-    /* Swipe Card Base */
+    /* GPU-Accelerated Swipe Card Base */
     .swipe-card {
       position: absolute;
       width: 100%;
@@ -292,10 +293,14 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
       cursor: grab;
       user-select: none;
-      touch-action: none;
+      touch-action: none; /* Stops gesture clashing on dragging */
       display: flex;
       flex-direction: column;
       transform-origin: 50% 100%;
+      will-change: transform, opacity; /* Informs browser to composite on GPU */
+      backface-visibility: hidden;    /* Removes flicker on Safari */
+      -webkit-backface-visibility: hidden;
+      transform: translate3d(0, 0, 0);
       transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
     }
 
@@ -317,7 +322,7 @@
     }
 
     .gallery-card.has-caption img {
-      height: 82%; /* Compresses only if custom label exists */
+      height: 82%; 
     }
 
     .swipe-card-caption {
@@ -629,11 +634,11 @@
 
     .wish-btn:hover {
       background-color: var(--red-hover);
-      transform: translateY(-2px);
+      transform: translate3d(0, -2px, 0);
     }
 
     .wish-btn:active {
-      transform: translateY(0);
+      transform: translate3d(0, 0, 0);
     }
 
     canvas#celebration-canvas {
@@ -665,19 +670,19 @@
     @keyframes fadeInUp {
       to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translate3d(0, 0, 0);
       }
     }
 
     @keyframes bounce {
       0%, 20%, 50%, 80%, 100% {
-        transform: translate(-50%, 0);
+        transform: translate3d(-50%, 0, 0);
       }
       40% {
-        transform: translate(-50%, -10px);
+        transform: translate3d(-50%, -10px, 0);
       }
       60% {
-        transform: translate(-50%, -5px);
+        transform: translate3d(-50%, -5px, 0);
       }
     }
 
@@ -786,7 +791,7 @@
         <div class="timeline-date">Present & Beyond</div>
         <h3 class="timeline-title serif-font">Celebrating You</h3>
         <p class="timeline-body">
-          Your birthday—officially together and walking hand-in-hand. This is only the opening chapter of a beautiful lifetime of seasons under God's grace.
+          Your birthday - officially together and walking hand-in-hand. This is only the opening chapter of a beautiful lifetime of seasons under God's grace.
         </p>
       </div>
     </div>
@@ -849,7 +854,7 @@
           </button>
           <div class="transcript-content" id="transcript-content">
             <p class="tagalog-text" style="margin-top: 16px;">
-              "Hey JM, this is your girlfriend. So now you can call me baby or baby. Ito na yung araw na pinag-pray ko sa Lord and yes, nag-answer na siya. Simula ng February 14 na nagkakilala tayo. March 17 na nagtapat ka ng nararamdaman sa akin. At April 16 nung nagpaalam ka talaga sa family ko, alam ko na genuine na yung love mo non sa akin. At akalain mo y'yun, unti-unti akong nafo-fall. Grateful ako kasi dumating ka... JM importante ka sa akin at ayoko ng mawala ka... mhal kita, mahal na kita. Oo na, tayo na. I love you, babe..."
+              "Hey JM, this is your girlfriend. So now you can call me baby or baby. Ito na yung araw na pinag-pray ko sa Lord and yes, nag-answer na siya. Simula ng February 14 na nagkakilala tayo. March 17 na nagtapat ka ng nararamdaman sa akin. At April 16 nung nagpaalam ka talaga sa family ko, alam ko na genuine na yung love mo non sa akin. At akalain mo y'yun, unti-unti akong nafo-fall. Grateful ako kasi dumating ka... JM importante ka sa akin at ayoko ng mawala ka... mhal kita, mahal na kita. Oo na, tayo na. I love you, bab..."
             </p>
           </div>
         </div>
@@ -957,7 +962,7 @@
 
 
     /* =========================================================================
-       2. REPO CONFIGURATION (Change 'ArkmJohn' and 'for-cel' if your repo changes!)
+       2. REPO CONFIGURATION 
        ========================================================================= */
     const GITHUB_CONFIG = {
       username: 'ArkmJohn',         
@@ -966,7 +971,7 @@
     };
 
     /* =========================================================================
-       3. REUSABLE GESTURAL STACK CONTROLLER (Tinder/Polaroid Swipe Physics)
+       3. HIGH-PERFORMANCE GPU GESTURAL STACK CONTROLLER (Tinder/Polaroid Physics)
        ========================================================================= */
     function initSwipeStack(containerId) {
       const container = document.getElementById(containerId);
@@ -976,33 +981,33 @@
       let startX = 0;
       let startY = 0;
       let currentCard = null;
+      let rafId = null; // Rendering frame holder
 
-      // Restructure scale & rotation layering relative to indices
       function restack() {
         const cards = Array.from(container.querySelectorAll('.swipe-card:not(.swiped)'));
         cards.forEach((card, i) => {
           const offset = i * 4;
           const scale = 1 - (i * 0.04);
           card.style.transition = 'transform 0.4s ease, opacity 0.4s ease';
-          card.style.transform = `scale(${scale}) translateY(${offset}px) rotate(${i % 2 === 0 ? 1 : -1}deg)`;
+          // Use translate3d to offload composite layers directly to GPU
+          card.style.transform = `translate3d(0, ${offset}px, 0) scale(${scale}) rotate(${i % 2 === 0 ? 1 : -1}deg)`;
           card.style.zIndex = cards.length - i;
         });
       }
 
-      // Initial card restacking setup
       restack();
 
       const startDrag = (e) => {
         if (isDragging) return;
         const cards = Array.from(container.querySelectorAll('.swipe-card:not(.swiped)'));
         if (cards.length === 0) return;
-        currentCard = cards[0]; // Intercept topmost active card
+        currentCard = cards; 
 
         isDragging = true;
         currentCard.style.transition = 'none';
 
-        const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-        const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+        const clientX = e.type.includes('touch') ? e.touches.clientX : e.clientX;
+        const clientY = e.type.includes('touch') ? e.touches.clientY : e.clientY;
         startX = clientX;
         startY = clientY;
       };
@@ -1010,31 +1015,38 @@
       const dragMove = (e) => {
         if (!isDragging || !currentCard) return;
 
-        const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-        const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+        // Prevent natural mobile screen scroll bouncing only when manipulating slides
+        if (e.cancelable) e.preventDefault();
+
+        const clientX = e.type.includes('touch') ? e.touches.clientX : e.clientX;
+        const clientY = e.type.includes('touch') ? e.touches.clientY : e.clientY;
         
         const deltaX = clientX - startX;
         const deltaY = clientY - startY;
-        const rotation = deltaX / 10;
 
-        currentCard.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(${rotation}deg)`;
+        // Throttles coordinate changes to align perfectly with screen refresh rate
+        if (rafId) cancelAnimationFrame(rafId);
+        rafId = requestAnimationFrame(() => {
+          const rotation = deltaX / 12;
+          currentCard.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0) rotate(${rotation}deg)`;
+        });
       };
 
       const stopDrag = (e) => {
         if (!isDragging || !currentCard) return;
         isDragging = false;
+        if (rafId) cancelAnimationFrame(rafId);
 
-        const endX = e.type.includes('touch') ? e.changedTouches[0].clientX : e.clientX;
+        const endX = e.type.includes('touch') ? e.changedTouches.clientX : e.clientX;
         const deltaX = endX - startX;
-        const threshold = 100; // px displacement threshold
+        const threshold = 100; 
 
         currentCard.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease';
 
         if (Math.abs(deltaX) > threshold) {
-          // Swipe complete
           const swipeOutWidth = window.innerWidth + 200;
           const direction = deltaX > 0 ? 1 : -1;
-          currentCard.style.transform = `translate(${direction * swipeOutWidth}px, 0px) rotate(${direction * 30}deg)`;
+          currentCard.style.transform = `translate3d(${direction * swipeOutWidth}px, 0px, 0) rotate(${direction * 30}deg)`;
           currentCard.style.opacity = '0';
           currentCard.classList.add('swiped');
 
@@ -1049,19 +1061,18 @@
           }, 500);
 
         } else {
-          // Snap back to base stack
-          currentCard.style.transform = `scale(1) translateY(0px) rotate(0deg)`;
+          currentCard.style.transform = `translate3d(0, 0, 0) scale(1) rotate(0deg)`;
           restack();
         }
         currentCard = null;
       };
 
-      // Register drag event bounds
       container.addEventListener('mousedown', startDrag);
       document.addEventListener('mousemove', dragMove);
       document.addEventListener('mouseup', stopDrag);
 
       container.addEventListener('touchstart', startDrag, { passive: true });
+      // touchmove must be non-passive to allow calling e.preventDefault() during dragging
       document.addEventListener('touchmove', dragMove, { passive: false });
       document.addEventListener('touchend', stopDrag);
     }
@@ -1102,7 +1113,7 @@
           // Check if filename starts with "label-"
           if (file.name.toLowerCase().startsWith("label-")) {
             // Strip out "label-", file extension, replace dashes/underscores with space
-            const rawText = file.name.slice(6).split('.')[0];
+            const rawText = file.name.slice(6).split('.');
             const cleanedText = rawText.replace(/[-_]/g, ' ');
             parsedLabel = cleanedText.charAt(0).toUpperCase() + cleanedText.slice(1);
           }
@@ -1141,7 +1152,6 @@
       const stackContainer = document.getElementById('gallery-stack');
       const card = document.createElement('div');
       
-      // If caption exists, toggle layout sizing to compress image slightly
       if (caption) {
         card.className = 'swipe-card gallery-card has-caption';
         card.innerHTML = `
