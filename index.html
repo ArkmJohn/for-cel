@@ -797,7 +797,7 @@
   <div id="password-gate">
     <div class="gate-card">
       <p class="gate-subtitle" style="cursor: default;">Private Archive</p>
-      <h2 class="gate-title serif-font" id="gate-title-click" style="cursor: pointer; user-select: none;">Our Special Date</h2>
+      <h2 class="gate-title serif-font" id="gate-title-click" style="cursor: pointer; user-select: none;">Preparing something beautiful</h2>
       
       <!-- Dynamic Countdown Section (Displays if locked before target date) -->
       <div id="countdown-wrapper" style="margin: 20px 0; display: none;">
@@ -1073,10 +1073,12 @@
 
         const now = new Date();
         const diff = targetDate - now;
+        const gateTitle = document.getElementById('gate-title-click');
 
         if (diff <= 0) {
           // Locked time exceeded: show passcode entry
           clearInterval(countdownInterval);
+          if (gateTitle) gateTitle.textContent = "Our Special Date";
           if (countdownWrapper) countdownWrapper.style.display = 'none';
           if (passcodeWrapper) {
             passcodeWrapper.style.display = 'block';
@@ -1085,6 +1087,7 @@
           }
         } else {
           // Locked time active: show countdown timer, hide entry
+          if (gateTitle) gateTitle.textContent = "Preparing something beautiful";
           if (countdownWrapper) countdownWrapper.style.display = 'block';
           if (passcodeWrapper) passcodeWrapper.style.display = 'none';
 
@@ -1123,6 +1126,9 @@
     function bypassCountdownEarly() {
       isBypassed = true;
       clearInterval(countdownInterval);
+      
+      const gateTitle = document.getElementById('gate-title-click');
+      if (gateTitle) gateTitle.textContent = "Our Special Date";
       
       const countdownWrapper = document.getElementById('countdown-wrapper');
       const passcodeWrapper = document.getElementById('passcode-wrapper');
@@ -1571,4 +1577,4 @@
     });
   </script>
 </body>
-</html>
+</html
