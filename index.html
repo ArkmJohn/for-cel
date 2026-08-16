@@ -832,6 +832,17 @@
   <!-- Celebration Canvas (Overlay) -->
   <canvas id="celebration-canvas"></canvas>
 
+  <!-- Wish Lightbox Overlay -->
+  <div id="wish-lightbox" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(15, 13, 13, 0.95); z-index: 100005; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.5s ease;">
+    <div style="background-color: var(--card-bg); border: 1px solid var(--border-color); padding: 30px; border-radius: 20px; max-width: 90%; width: 420px; text-align: center; position: relative; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6); transform: scale(0.9); transition: transform 0.5s ease;" id="lightbox-content">
+      <!-- Close Button -->
+      <button onclick="closeWishLightbox()" style="position: absolute; top: 16px; right: 16px; background: none; border: none; color: var(--text-muted); font-size: 1.8rem; cursor: pointer; line-height: 1; outline: none; transition: color 0.3s;" onmouseover="this.style.color='var(--red-accent)'" onmouseout="this.style.color='var(--text-muted)'">&times;</button>
+      <img src="special-image.jpg" alt="Our Special Memory" style="width: 100%; border-radius: 12px; max-height: 380px; object-fit: cover; border: 1px solid var(--border-color); margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+      <p class="serif-font" style="font-size: 1.35rem; color: var(--yellow-accent); margin-bottom: 10px; font-style: italic;">Philippians 1:3</p>
+      <p style="font-size: 1rem; color: var(--text-main); font-weight: 300; line-height: 1.7; font-style: italic;">"I thank my God every time I remember you"</p>
+    </div>
+  </div>
+
   <!-- Hero Section -->
   <header class="hero">
     <div class="hero-content">
@@ -1575,6 +1586,30 @@
       }
     }
 
+    function openWishLightbox() {
+      const lightbox = document.getElementById('wish-lightbox');
+      const content = document.getElementById('lightbox-content');
+      if (lightbox && content) {
+        lightbox.style.display = 'flex';
+        setTimeout(() => {
+          lightbox.style.opacity = '1';
+          content.style.transform = 'scale(1)';
+        }, 10);
+      }
+    }
+
+    function closeWishLightbox() {
+      const lightbox = document.getElementById('wish-lightbox');
+      const content = document.getElementById('lightbox-content');
+      if (lightbox && content) {
+        lightbox.style.opacity = '0';
+        content.style.transform = 'scale(0.9)';
+        setTimeout(() => {
+          lightbox.style.display = 'none';
+        }, 500);
+      }
+    }
+
     function triggerCelebration() {
       // Extinguish candle flame gently on click before the celebration shower!
       const flame = document.getElementById('wish-flame');
@@ -1599,6 +1634,9 @@
       if (!animationId) {
         animateParticles();
       }
+
+      // Open the dynamic lightbox overlay
+      openWishLightbox();
     }
 
     /* =========================================================================
