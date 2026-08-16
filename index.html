@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Journey — Happy Birthday, Cel</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-warm-cream: #faf7f2;
+      --card-bg: #ffffff;
+      --text-main: #2c2a29;
+      --text-muted: #6e6a66;
+      --gold-accent: #c5a059;
+      --gold-hover: #b38e47;
+      --rose-accent: #e3b3a3;
+      --border-color: #f0e9df;
+      --transition-speed: 0.4s;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-warm-cream);
+      font-family: 'Montserrat', sans-serif;
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, .serif-font {
+      font-family: 'Playfair Display', serif;
+      font-weight: 500;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Hero Section */
+    header.hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, rgba(250,247,242,0.6) 100%);
+      padding: 24px;
+    }
+
+    .hero-content {
+      max-width: 750px;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      color: var(--text-main);
+      margin-bottom: 16px;
+      letter-spacing: -0.5px;
+    }
+
+    .hero p.subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.35rem);
+      color: var(--gold-accent);
+      font-weight: 300;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .hero .description {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 36px auto;
+      font-weight: 300;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: bounce 2s infinite;
+      color: var(--gold-accent);
+      cursor: pointer;
+    }
+
+    /* Vertical Timeline */
+    section.timeline-section {
+      padding: 100px 0;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      margin-bottom: 16px;
+      color: var(--text-main);
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      font-weight: 300;
+      margin-bottom: 64px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-size: 0.9rem;
+    }
+
+    .timeline {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px 0;
+    }
+
+    .timeline::after {
+      content: '';
+      position: absolute;
+      width: 1px;
+      background-color: var(--border-color);
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      margin-left: -0.5px;
+    }
+
+    .timeline-item {
+      padding: 10px 40px;
+      position: relative;
+      background-color: inherit;
+      width: 50%;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s ease;
+    }
+
+    .timeline-item.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .timeline-item.left {
+      left: 0;
+    }
+
+    .timeline-item.right {
+      left: 50%;
+    }
+
+    .timeline-item::after {
+      content: '';
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      right: -6px;
+      background-color: var(--bg-warm-cream);
+      border: 2px solid var(--gold-accent);
+      top: 25px;
+      border-radius: 50%;
+      z-index: 1;
+      transition: background-color 0.3s ease;
+    }
+
+    .timeline-item.right::after {
+      left: -6px;
+    }
+
+    .timeline-content {
+      padding: 28px;
+      background-color: var(--card-bg);
+      position: relative;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+      border: 1px solid var(--border-color);
+    }
+
+    .timeline-date {
+      font-size: 0.85rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--gold-accent);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .timeline-title {
+      font-size: 1.35rem;
+      margin-bottom: 12px;
+      color: var(--text-main);
+    }
+
+    .timeline-body {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    /* Voice Note Section */
+    section.voice-note-section {
+      padding: 100px 0;
+      background-color: var(--card-bg);
+      border-top: 1px solid var(--border-color);
+      text-align: center;
+    }
+
+    .voice-card {
+      max-width: 650px;
+      margin: 0 auto;
+      background-color: var(--bg-warm-cream);
+      padding: 48px;
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.01);
+      position: relative;
+    }
+
+    .pulse-ring {
+      display: inline-block;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(197, 160, 89, 0.1);
+      box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.4);
+      animation: pulse 2s infinite;
+      margin-bottom: 16px;
+    }
+
+    .pulse-svg {
+      color: var(--gold-accent);
+      margin-top: 12px;
+    }
+
+    .audio-player-container {
+      background-color: var(--card-bg);
+      border-radius: 40px;
+      padding: 12px 24px;
+      border: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      margin: 30px 0;
+    }
+
+    .player-controls {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      gap: 16px;
+    }
+
+    .player-btn {
+      background-color: var(--gold-accent);
+      color: white;
+      border: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background-color 0.3s;
+    }
+
+    .player-btn:hover {
+      background-color: var(--gold-hover);
+    }
+
+    .player-progress-area {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      text-align: left;
+    }
+
+    .player-progress-bar {
+      height: 6px;
+      background-color: var(--border-color);
+      border-radius: 3px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .player-progress-filled {
+      height: 100%;
+      width: 0%;
+      background-color: var(--gold-accent);
+      border-radius: 3px;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .player-time {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .transcript-wrapper {
+      margin-top: 24px;
+    }
+
+    .transcript-toggle-btn {
+      background: none;
+      border: none;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem;
+      color: var(--gold-accent);
+      cursor: pointer;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .transcript-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      margin-top: 16px;
+    }
+
+    .transcript-content.expanded {
+      max-height: 250px;
+    }
+
+    .tagalog-text {
+      font-size: 1rem;
+      color: var(--text-muted);
+      font-style: italic;
+      line-height: 1.8;
+      font-family: 'Playfair Display', serif;
+      font-weight: 400;
+      padding: 0 12px;
+    }
+
+    /* Dynamic Gallery */
+    section.gallery-section {
+      padding: 100px 0;
+      background-color: var(--bg-warm-cream);
+      border-top: 1px solid var(--border-color);
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+      margin-top: 40px;
+    }
+
+    .gallery-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      aspect-ratio: 4/5;
+      background-color: var(--bg-warm-cream);
+      border: 1px solid var(--border-color);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.01);
+      transition: transform var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .gallery-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+    }
+
+    .gallery-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform var(--transition-speed) ease;
+    }
+
+    .gallery-card:hover img {
+      transform: scale(1.04);
+    }
+
+    .gallery-loader {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 0;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    /* Spinner */
+    .spinner {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      border: 2px solid var(--border-color);
+      border-radius: 50%;
+      border-top-color: var(--gold-accent);
+      animation: spin 1s ease-in-out infinite;
+      margin-bottom: 16px;
+    }
+
+    /* Letter Section */
+    section.letter-section {
+      padding: 100px 0;
+      background-color: var(--card-bg);
+      border-top: 1px solid var(--border-color);
+    }
+
+    .letter-card {
+      max-width: 750px;
+      margin: 0 auto;
+      background-color: var(--card-bg);
+      padding: 60px 50px;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.02);
+      border: 1px solid var(--border-color);
+      position: relative;
+    }
+
+    .letter-card::before {
+      content: '';
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      right: 15px;
+      bottom: 15px;
+      border: 1px solid rgba(197, 160, 89, 0.2);
+      border-radius: 12px;
+      pointer-events: none;
+    }
+
+    .letter-salutation {
+      font-size: 1.5rem;
+      margin-bottom: 24px;
+      color: var(--text-main);
+    }
+
+    .letter-body p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      font-weight: 300;
+      line-height: 1.8;
+    }
+
+    .letter-signature {
+      margin-top: 40px;
+      text-align: right;
+      font-size: 1.25rem;
+      color: var(--gold-accent);
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+    }
+
+    /* Celebration Button & Canvas */
+    .wish-container {
+      text-align: center;
+      padding: 80px 0 120px 0;
+      background-color: var(--bg-warm-cream);
+    }
+
+    .wish-btn {
+      display: inline-block;
+      background-color: var(--gold-accent);
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      padding: 16px 36px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(197, 160, 89, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .wish-btn:hover {
+      background-color: var(--gold-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(197, 160, 89, 0.35);
+    }
+
+    .wish-btn:active {
+      transform: translateY(0);
+    }
+
+    canvas#celebration-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--card-bg);
+      padding: 40px 24px;
+      text-align: center;
+      border-top: 1px solid var(--border-color);
+    }
+
+    footer p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translate(-50%, 0);
+      }
+      40% {
+        transform: translate(-50%, -10px);
+      }
+      60% {
+        transform: translate(-50%, -5px);
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.3);
+      }
+      70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px rgba(197, 160, 89, 0);
+      }
+      100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(197, 160, 89, 0);
+      }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      .timeline::after {
+        left: 31px;
+      }
+      .timeline-item {
+        width: 100%;
+        padding-left: 70px;
+        padding-right: 20px;
+      }
+      .timeline-item.right {
+        left: 0;
+      }
+      .timeline-item::after {
+        left: 25px;
+        right: auto;
+      }
+      .timeline-item.right::after {
+        left: 25px;
+      }
+      .letter-card {
+        padding: 40px 24px;
+      }
+      .voice-card {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Celebration Canvas (Overlay) -->
+  <canvas id="celebration-canvas"></canvas>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-content">
+      <p class="subtitle">Happy Birthday, Cel</p>
+      <h1>A Repo of Our Journey</h1>
+      <p class="description">
+        Babe, this is a living archive built to preserve every chapter, conversation, and milestone we share. From our beautiful start in February to every season that lies ahead, this space will grow alongside us.
+      </p>
+    </div>
+    <div class="scroll-indicator" onclick="document.getElementById('timeline-sec').scrollIntoView({behavior: 'smooth'})">
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+      </svg>
+    </div>
+  </header>
+
+  <!-- Timeline Section -->
+  <section class="timeline-section" id="timeline-sec">
+    <div class="container">
+      <h2 class="section-title">The Story So Far</h2>
+      <p class="section-subtitle">Milestones we've passed</p>
+      
+      <div class="timeline">
+        <!-- Milestone 1 -->
+        <div class="timeline-item left">
+          <div class="timeline-content">
+            <div class="timeline-date">February 14</div>
+            <h3 class="timeline-title">The Spark</h3>
+            <p class="timeline-body">
+              The day our paths crossed on Valentine's Day. An unexpected, beautiful beginning that set our entire journey into motion.
+            </p>
+          </div>
+        </div>
+
+        <!-- Milestone 2 -->
+        <div class="timeline-item right">
+          <div class="timeline-content">
+            <div class="timeline-date">March 17</div>
+            <h3 class="timeline-title">Laying It All Out</h3>
+            <p class="timeline-body">
+              The night I laid my feelings on the table and we began our honest chapter. No walls, just true, open conversations about our pasts, our healing, and what we wanted our lives to look like.
+            </p>
+          </div>
+        </div>
+
+        <!-- Milestone 3 -->
+        <div class="timeline-item left">
+          <div class="timeline-content">
+            <div class="timeline-date">April 16</div>
+            <h3 class="timeline-title">Family Blessing</h3>
+            <p class="timeline-body">
+              Taking an essential step forward. I sat down and asked permission from your family, wanting to build our relationship on a firm foundation of respect, honor, and intention.
+            </p>
+          </div>
+        </div>
+
+        <!-- Milestone 4 -->
+        <div class="timeline-item right">
+          <div class="timeline-content">
+            <div class="timeline-date">Present & Beyond</div>
+            <h3 class="timeline-title">Celebrating You</h3>
+            <p class="timeline-body">
+              Your birthday—officially together and walking hand-in-hand. This is only the opening chapter of a beautiful lifetime of seasons under God's grace.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Voice Note Section (The Recording) -->
+  <section class="voice-note-section">
+    <div class="container">
+      <div class="voice-card">
+        <div class="voice-header">
+          <div class="pulse-ring">
+            <svg class="pulse-svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/>
+            </svg>
+          </div>
+          <h2 class="section-title" style="font-size: 1.75rem; margin-bottom: 4px;">The Voice That Changed Everything</h2>
+          <p class="section-subtitle" style="margin-bottom: 24px; font-size: 0.8rem; letter-spacing: 1px;">The moment you said yes</p>
+        </div>
+
+        <!-- HTML5 Custom Player markup -->
+        <div class="audio-player-container">
+          <audio id="love-audio" src="audio/recording_19.m4a" preload="metadata"></audio>
+          <div class="player-controls">
+            <button class="player-btn" id="play-btn" onclick="toggleAudio()">
+              <!-- Play Icon -->
+              <svg id="play-icon" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+              <!-- Pause Icon -->
+              <svg id="pause-icon" style="display:none;" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+              </svg>
+            </button>
+            <div class="player-progress-area">
+              <div class="player-progress-bar" id="progress-bar">
+                <div class="player-progress-filled" id="progress-filled"></div>
+              </div>
+              <div class="player-time">
+                <span id="current-time">0:00</span>
+                <span id="total-duration">--:--</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Transcript Accoridon -->
+        <div class="transcript-wrapper">
+          <button class="transcript-toggle-btn" onclick="toggleTranscript()">
+            Read her message
+            <svg id="arrow-down" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="margin-left: 8px; transition: transform 0.3s;">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+            </svg>
+          </button>
+          <div class="transcript-content" id="transcript-content">
+            <p class="tagalog-text" style="margin-top: 16px;">
+              "Hey JM, this is your girlfriend. So now you can call me baby or baby. Ito na yung araw na pinag-pray ko sa Lord and yes, nag-answer na siya. Simula ng February 14 na nagkakilala tayo. March 17 na nagtapat ka ng nararamdaman sa akin. At April 16 nung nagpaalam ka talaga sa family ko, alam ko na genuine na yung love mo non sa akin. At akalain mo y'yun, unti-unti akong nafo-fall. Grateful ako kasi dumating ka... JM importante ka sa akin at ayoko ng mawala ka... mhal kita, mahal na kita. Oo na, tayo na. I love you, bab..."
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section class="gallery-section">
+    <div class="container">
+      <h2 class="section-title">Our Memory Lane</h2>
+      <p class="section-subtitle">Every captured second since February</p>
+      
+      <div class="gallery-grid" id="gallery-grid">
+        <div class="gallery-loader" id="gallery-loader">
+          <div class="spinner"></div>
+          <p>Fetching memories from GitHub...</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Letter Section -->
+  <section class="letter-section">
+    <div class="container">
+      <div class="letter-card">
+        <h3 class="letter-salutation">My Dearest Cel,</h3>
+        <div class="letter-body">
+          <p>
+            Happy Birthday, babe! Looking back at our journey since February, I am constantly filled with gratitude for how God brought us together. The honest conversations we shared right from March 17 laid down a foundation of trust that has only grown stronger with every passing week.
+          </p>
+          <p>
+            You once mentioned that you had never met someone who constantly reminded you of your true value. I want to promise you today, babe, that showing you your worth is something I will never stop doing. You carry such a beautiful, quiet strength and grace, and seeing your heart light up brings me more joy than words can capture.
+          </p>
+          <p>
+            I look forward to walking hand-in-hand with you through every season ahead, cherishing every single milestone, and building a lifetime of happy, purposeful tomorrows together under His grace. 
+          </p>
+        </div>
+        <div class="letter-signature">
+          With all my love, always.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Make a Wish Call to Action -->
+  <div class="wish-container">
+    <button class="wish-btn" id="wish-btn" onclick="triggerCelebration()">Click to Make a Wish</button>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>For Cel | Created with love &bull; Updated dynamically</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    /* =========================================================================
+       1. REPO CONFIGURATION (Update this with your own details!)
+       ========================================================================= */
+    const GITHUB_CONFIG = {
+      username: 'ArkmJohn', // Change to your GitHub Username
+      repo: 'for-cel',           // Change to your Repository Name
+      folderPath: 'images'              // The directory where you drop your images
+    };
+
+    /* =========================================================================
+       2. DYNAMIC GALLERY FETCH (GitHub REST API)
+       ========================================================================= */
+    async function fetchGitHubImages() {
+      const loader = document.getElementById('gallery-loader');
+      const grid = document.getElementById('gallery-grid');
+      
+      if (GITHUB_CONFIG.username === 'YOUR_GITHUB_USERNAME') {
+        renderLocalFallback();
+        return;
+      }
+
+      try {
+        const response = await fetch(`https://api.github.com/repos/${GITHUB_CONFIG.username}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.folderPath}`);
+        if (!response.ok) throw new Error('API failure');
+        
+        const files = await response.json();
+        
+        const imageFiles = files.filter(file => 
+          /\.(jpe?g|png|gif|webp|heic)$/i.test(file.name)
+        );
+
+        if (imageFiles.length === 0) {
+          loader.innerHTML = '<p>The images folder is empty. Push some photos to start!</p>';
+          return;
+        }
+
+        grid.removeChild(loader);
+        imageFiles.forEach(file => {
+          const card = document.createElement('div');
+          card.className = 'gallery-card';
+          card.innerHTML = `<img src="${file.download_url}" alt="Cel and Me" loading="lazy">`;
+          grid.appendChild(card);
+        });
+
+      } catch (error) {
+        console.warn('Could not load from GitHub API directly. Swapping to fallback paths.');
+        renderLocalFallback();
+      }
+    }
+
+    function renderLocalFallback() {
+      const loader = document.getElementById('gallery-loader');
+      const grid = document.getElementById('gallery-grid');
+      if (loader) grid.removeChild(loader);
+
+      const fallbackImages = [
+        'images/feb_meeting.jpg',
+        'images/march_confession.jpg',
+        'images/april_asking.jpg',
+        'images/birthday.jpg'
+      ];
+
+      fallbackImages.forEach(path => {
+        const card = document.createElement('div');
+        card.className = 'gallery-card';
+        card.innerHTML = `<img src="${path}" alt="Memory with Cel" onerror="this.parentElement.style.display='none';">`;
+        grid.appendChild(card);
+      });
+    }
+
+    /* =========================================================================
+       3. CUSTOM AUDIO PLAYER INTERFACE LOGIC
+       ========================================================================= */
+    const audio = document.getElementById('love-audio');
+    const playBtn = document.getElementById('play-btn');
+    const playIcon = document.getElementById('play-icon');
+    const pauseIcon = document.getElementById('pause-icon');
+    const progressBar = document.getElementById('progress-bar');
+    const progressFilled = document.getElementById('progress-filled');
+    const currentTimeEl = document.getElementById('current-time');
+    const totalDurationEl = document.getElementById('total-duration');
+
+    function toggleAudio() {
+      if (audio.paused) {
+        audio.play();
+        playIcon.style.display = 'none';
+        pauseIcon.style.display = 'block';
+      } else {
+        audio.pause();
+        playIcon.style.display = 'block';
+        pauseIcon.style.display = 'none';
+      }
+    }
+
+    audio.addEventListener('timeupdate', () => {
+      if(audio.duration) {
+        const percentage = (audio.currentTime / audio.duration) * 100;
+        progressFilled.style.width = `${percentage}%`;
+      }
+      currentTimeEl.textContent = formatTime(audio.currentTime);
+    });
+
+    audio.addEventListener('loadedmetadata', () => {
+      totalDurationEl.textContent = formatTime(audio.duration);
+    });
+
+    // Support browser fallback if loadedmetadata loads late
+    audio.addEventListener('durationchange', () => {
+      totalDurationEl.textContent = formatTime(audio.duration);
+    });
+
+    function formatTime(time) {
+      if (isNaN(time)) return "0:00";
+      const mins = Math.floor(time / 60);
+      const secs = Math.floor(time % 60);
+      return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    progressBar.addEventListener('click', (e) => {
+      const rect = progressBar.getBoundingClientRect();
+      const pos = (e.clientX - rect.left) / rect.width;
+      audio.currentTime = pos * audio.duration;
+    });
+
+    audio.addEventListener('ended', () => {
+      playIcon.style.display = 'block';
+      pauseIcon.style.display = 'none';
+      progressFilled.style.width = '0%';
+      audio.currentTime = 0;
+    });
+
+    /* =========================================================================
+       4. TRANSCRIPT ACCORDION TOGGLE
+       ========================================================================= */
+    function toggleTranscript() {
+      const content = document.getElementById('transcript-content');
+      const arrow = document.getElementById('arrow-down');
+      content.classList.toggle('expanded');
+      
+      if (content.classList.contains('expanded')) {
+        arrow.style.transform = 'rotate(180deg)';
+      } else {
+        arrow.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    /* =========================================================================
+       5. INTERACTIVE CONFETTI & HEARTS SHOWER EFFECT (Canvas-based)
+       ========================================================================= */
+    const canvas = document.getElementById('celebration-canvas');
+    const ctx = canvas.getContext('2d');
+    let animationId = null;
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.size = Math.random() * 8 + 6;
+        this.speedX = Math.random() * 6 - 3;
+        this.speedY = Math.random() * -6 - 4;
+        this.gravity = 0.15;
+        this.type = Math.random() > 0.4 ? 'heart' : 'confetti';
+        this.color = this.getRandomColor();
+        this.opacity = 1;
+        this.rotation = Math.random() * 360;
+        this.rotationSpeed = Math.random() * 4 - 2;
+      }
+
+      getRandomColor() {
+        const colors = [
+          '#c5a059', // Gold
+          '#e3b3a3', // Rose Gold
+          '#f5e3db', // Warm Cream
+          '#ffb3c1', // Soft Pink
+          '#ff85a1'  // Pink blush
+        ];
+        return colors[Math.floor(Math.random() * colors.length)];
+      }
+
+      update() {
+        this.speedY += this.gravity;
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.opacity -= 0.01;
+        this.rotation += this.rotationSpeed;
+      }
+
+      draw() {
+        ctx.save();
+        ctx.globalAlpha = this.opacity;
+        ctx.translate(this.x, this.y);
+        ctx.rotate((this.rotation * Math.PI) / 180);
+        ctx.fillStyle = this.color;
+
+        if (this.type === 'heart') {
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.bezierCurveTo(-this.size / 2, -this.size / 2, -this.size, 0, 0, this.size);
+          ctx.bezierCurveTo(this.size, 0, this.size / 2, -this.size / 2, 0, 0);
+          ctx.fill();
+        } else {
+          ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
+        }
+        ctx.restore();
+      }
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles = particles.filter(p => p.opacity > 0 && p.y < canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+
+      if (particles.length > 0) {
+        animationId = requestAnimationFrame(animateParticles);
+      } else {
+        cancelAnimationFrame(animationId);
+        animationId = null;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    function triggerCelebration() {
+      const btn = document.getElementById('wish-btn');
+      const rect = btn.getBoundingClientRect();
+      const originX = rect.left + rect.width / 2;
+      const originY = rect.top + rect.height / 2;
+
+      for (let i = 0; i < 75; i++) {
+        particles.push(new Particle(originX, originY));
+      }
+
+      for (let i = 0; i < 25; i++) {
+        particles.push(new Particle(Math.random() * canvas.width, canvas.height + 10));
+      }
+
+      if (!animationId) {
+        animateParticles();
+      }
+    }
+
+    /* =========================================================================
+       6. SCROLL ANIMATION TRIGGER FOR TIMELINE
+       ========================================================================= */
+    function checkTimelineScroll() {
+      const items = document.querySelectorAll('.timeline-item');
+      items.forEach(item => {
+        const rect = item.getBoundingClientRect();
+        if (rect.top <= window.innerHeight * 0.85) {
+          item.classList.add('visible');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', checkTimelineScroll);
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchGitHubImages();
+      setTimeout(checkTimelineScroll, 200);
+    });
+  </script>
+</body>
+</html>
