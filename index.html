@@ -1063,7 +1063,7 @@
       </svg>
     </div>
 
-    <button class="wish-btn" id="wish-btn" onclick="triggerCelebration()">Click to Make a Wish</button>
+    <button class="wish-btn" id="wish-btn" onclick="triggerCelebration(true)">Click to Make a Wish</button>
   </div>
 
   <!-- Footer -->
@@ -1207,7 +1207,7 @@
         document.body.style.overflow = 'auto';
         
         setTimeout(() => {
-          triggerCelebration();
+          triggerCelebration(false);
         }, 500);
       } else {
         errEl.classList.add('show');
@@ -1610,7 +1610,7 @@
       }
     }
 
-    function triggerCelebration() {
+    function triggerCelebration(showLightbox) {
       // Extinguish candle flame gently on click before the celebration shower!
       const flame = document.getElementById('wish-flame');
       if (flame) {
@@ -1635,8 +1635,10 @@
         animateParticles();
       }
 
-      // Open the dynamic lightbox overlay
-      openWishLightbox();
+      // Open the dynamic lightbox overlay if requested
+      if (showLightbox) {
+        openWishLightbox();
+      }
     }
 
     /* =========================================================================
