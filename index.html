@@ -182,7 +182,7 @@
       animation: shake 0.4s ease-in-out;
     }
 
-    /* Hero Section */
+    /* Hero Section Styling & Floating Animation */
     header.hero {
       position: relative;
       height: 100vh;
@@ -200,6 +200,28 @@
       opacity: 0;
       transform: translateY(30px);
       animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Stitch & Angel Floating Entrance */
+    .hero-illustration {
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .stitch-angel-img {
+      width: 150px; /* Perfect size above the header */
+      height: auto;
+      filter: drop-shadow(0 8px 16px rgba(240, 165, 165, 0.25)); /* Soft glowing pink aura */
+      animation: float-love 4s ease-in-out infinite; /* Smooth floating effect */
+      user-select: none;
+      pointer-events: none;
+    }
+
+    @keyframes float-love {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
     }
 
     .hero h1 {
@@ -314,7 +336,7 @@
       transform: scale(0.95);
     }
 
-    /* Solid Simple Stack Cards (Zero Complex Transitions) */
+    /* Solid Simple Stack Cards */
     .swipe-card {
       position: absolute;
       width: 100%;
@@ -334,16 +356,28 @@
       padding: 16px 16px 48px 16px;
     }
 
+    /* Multi-Ratio Smart Detection Rules */
     .gallery-card img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
       border-radius: 12px;
       pointer-events: none;
+      background-color: #050404; /* Warm dark frame background for horizontal letterboxing */
+      transition: opacity 0.3s ease;
     }
 
+    /* If has caption, save room for text bottom */
     .gallery-card.has-caption img {
       height: 82%; 
+    }
+
+    /* Aspect-ratio safe fitting overrides */
+    .gallery-card img.landscape-img {
+      object-fit: contain; /* Landscape: Show fully, never crop Cel & JM */
+    }
+
+    .gallery-card img.portrait-img {
+      object-fit: cover; /* Portrait: Fill the container beautifully */
     }
 
     .swipe-card-caption {
@@ -617,12 +651,43 @@
       font-style: italic;
     }
 
-    /* Celebration Button & Canvas */
+    /* Celebration Button, Cake Styling, and Canvas */
     .wish-container {
       width: 100%;
       text-align: center;
       padding: 60px 0 100px 0;
       background-color: var(--bg-dark);
+    }
+
+    .cake-wrapper {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .cake-svg {
+      width: 110px;
+      height: 110px;
+      filter: drop-shadow(0 0 12px rgba(245, 208, 97, 0.25)); /* Warm golden aura */
+    }
+
+    /* Flickering candle flame */
+    .cake-flame {
+      animation: flameFlicker 0.6s infinite alternate ease-in-out;
+      transform-origin: 60px 26px; /* Anchor animation to bottom of flame */
+    }
+
+    @keyframes flameFlicker {
+      0% {
+        transform: scale(0.95) rotate(-2deg);
+        opacity: 0.85;
+      }
+      100% {
+        transform: scale(1.1) rotate(2deg);
+        opacity: 1;
+        filter: drop-shadow(0 0 8px var(--yellow-accent));
+      }
     }
 
     .wish-btn {
@@ -724,60 +789,6 @@
         padding: 30px 16px;
       }
     }
-
-    /* Stitch & Angel Floating Entrance */
-    .hero-illustration {
-      margin-bottom: 15px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .stitch-angel-img {
-      width: 150px; /* Perfect size above the header */
-      height: auto;
-      filter: drop-shadow(0 8px 16px rgba(240, 165, 165, 0.25)); /* Soft glowing pink aura */
-      animation: float-love 4s ease-in-out infinite; /* Smooth floating effect */
-      user-select: none;
-      pointer-events: none;
-    }
-
-    @keyframes float-love {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-
-     /* Simple Cake & Candle styling */
-    .cake-wrapper {
-      margin-bottom: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .cake-svg {
-      width: 110px;
-      height: 110px;
-      filter: drop-shadow(0 0 12px rgba(245, 208, 97, 0.25)); /* Warm golden aura */
-    }
-
-    /* Tactile flame flicker (Zero performance lag) */
-    .cake-flame {
-      animation: flameFlicker 0.6s infinite alternate ease-in-out;
-      transform-origin: 60px 26px; /* Anchor animation to bottom of flame */
-    }
-
-    @keyframes flameFlicker {
-      0% {
-        transform: scale(0.95) rotate(-2deg);
-        opacity: 0.85;
-      }
-      100% {
-        transform: scale(1.1) rotate(2deg);
-        opacity: 1;
-        filter: drop-shadow(0 0 8px var(--yellow-accent));
-      }
-    }
   </style>
 </head>
 <body style="overflow: hidden;"> <!-- Body locked initially until passcode unlocks it -->
@@ -804,12 +815,13 @@
   <!-- Hero Section -->
   <header class="hero">
     <div class="hero-content">
-       <!-- Stitch & Angel Transparent Illustration -->
+      <!-- Stitch & Angel Transparent Illustration -->
       <div class="hero-illustration">
-         <img src="stitch-angel2.png" alt="Stitch and Angel" class="stitch-angel-img">
+        <img src="stitch-angel2.png" alt="Stitch and Angel" class="stitch-angel-img">
       </div>
+      
       <p class="subtitle">Happy Birthday, Cel</p>
-      <h1>A Notebook of Our Journey</h1>
+      <h1>A Repo of Our Journey</h1>
       <p class="description">
         Babe, this is a living archive built to preserve every chapter, conversation, and milestone we share. From our beautiful start in February to every season that lies ahead, this space will grow alongside us.
       </p>
@@ -989,10 +1001,10 @@
     </div>
   </section>
 
-    <!-- Make a Wish Call to Action -->
+  <!-- Make a Wish Call to Action with Cake -->
   <div class="wish-container">
     
-    <!-- Interactive Birthday Cake & Flickering Candle -->
+    <!-- Beautiful Inline Cake & Flickering Candle Decoration -->
     <div class="cake-wrapper">
       <svg class="cake-svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
         <!-- Plate -->
@@ -1016,7 +1028,7 @@
         <path d="M58 35 L62 33 M58 43 L62 41 M58 51 L62 49" stroke="var(--yellow-accent)" stroke-width="1.5"/>
 
         <!-- Flickering Flame -->
-        <path class="cake-flame" d="M60 5 C56 16, 56 22, 60 26 C64 22, 64 16, 60 5 Z" fill="var(--yellow-accent)"/>
+        <path class="cake-flame" id="wish-flame" d="M60 5 C56 16, 56 22, 60 26 C64 22, 64 16, 60 5 Z" fill="var(--yellow-accent)"/>
       </svg>
     </div>
 
@@ -1163,8 +1175,16 @@
     }
 
     /* =========================================================================
-       4. DYNAMIC GALLERY FETCH (Parses filename for label starts-with)
+       4. DYNAMIC GALLERY FETCH & ASPECT-RATIO ORIENTATION DETECTION
        ========================================================================= */
+    function detectImageOrientation(img) {
+      if (img.naturalWidth > img.naturalHeight) {
+        img.classList.add('landscape-img'); // Fix aspect-ratio for landscape (contain)
+      } else {
+        img.classList.add('portrait-img');  // Beautiful cover for portrait/square
+      }
+    }
+
     async function fetchGitHubImages() {
       const loader = document.getElementById('gallery-loader');
       const stackContainer = document.getElementById('gallery-stack');
@@ -1242,17 +1262,17 @@
       const stackContainer = document.getElementById('gallery-stack');
       const card = document.createElement('div');
       
+      const imgHtml = `<img src="${imageUrl}" alt="Memory with Cel" onload="detectImageOrientation(this)" onerror="this.parentElement.style.display='none';">`;
+      
       if (caption) {
         card.className = 'swipe-card gallery-card has-caption';
         card.innerHTML = `
-          <img src="${imageUrl}" alt="Memory with Cel" onerror="this.parentElement.style.display='none';">
+          ${imgHtml}
           <div class="swipe-card-caption">${caption}</div>
         `;
       } else {
         card.className = 'swipe-card gallery-card';
-        card.innerHTML = `
-          <img src="${imageUrl}" alt="Memory with Cel" onerror="this.parentElement.style.display='none';">
-        `;
+        card.innerHTML = imgHtml;
       }
       stackContainer.appendChild(card);
     }
@@ -1419,6 +1439,13 @@
     }
 
     function triggerCelebration() {
+      // Extinguish candle flame gently on click before the celebration shower!
+      const flame = document.getElementById('wish-flame');
+      if (flame) {
+        flame.style.transition = 'opacity 1s ease';
+        flame.style.opacity = '0';
+      }
+
       const btn = document.getElementById('wish-btn');
       const rect = btn.getBoundingClientRect();
       const originX = rect.left + rect.width / 2;
