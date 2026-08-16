@@ -565,7 +565,7 @@
     }
 
     .transcript-content.expanded {
-      max-height: 250px;
+      max-height: 800px;
     }
 
     .tagalog-text {
@@ -779,6 +779,14 @@
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
+    }
+
+    @media (min-width: 1024px) {
+      #gallery-stack.stack-container {
+        width: 450px;
+        height: 580px;
+        margin: 30px auto 20px auto;
+      }
     }
 
     @media (max-width: 768px) {
