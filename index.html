@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Our Journey — Happy Birthday, Cel</title>
   
   <!-- Fonts -->
@@ -12,16 +12,15 @@
   
   <style>
     :root {
-      --bg-warm-pink: #fdf5f5;      /* Extremely soft, romantic blush pink */
-      --card-bg: #ffffff;           /* Crisp card backgrounds */
-      --text-main: #1e1b1b;         /* Rich off-black for high-contrast structure */
-      --text-muted: #5e5253;        /* Soft charcoal-burgundy for body text */
-      --yellow-accent: #f5d061;     /* Warm champagne yellow for highlights */
-      --yellow-hover: #e0bc4f; 
-      --pink-accent: #f0a5a5;       /* Romantic mid-tone pink */
-      --red-accent: #cf455c;        /* Soft crimson for main action elements */
+      --bg-dark: #0f0d0d;           /* Deep charcoal-black */
+      --card-bg: #181515;           /* Rich dark off-black for containers */
+      --text-main: #f5eded;         /* Crisp soft cream for excellent dark readability */
+      --text-muted: #a39596;        /* Rose-tinted muted gray for subtexts */
+      --yellow-accent: #f5d061;     /* Warm glowing gold/yellow */
+      --pink-accent: #f0a5a5;       /* Soft glowing pink */
+      --red-accent: #df4b61;        /* Romantic crimson red (dominant highlight) */
       --red-hover: #b53248;
-      --border-color: #f7e1e1;      /* Light pink-gold border */
+      --border-color: #2b2223;      /* Subtle dark rose-tinted border */
       --transition-speed: 0.4s;
     }
 
@@ -29,10 +28,11 @@
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      -webkit-tap-highlight-color: transparent; /* Clean touch for mobile webkit */
     }
 
     body {
-      background-color: var(--bg-warm-pink);
+      background-color: var(--bg-dark);
       font-family: 'Montserrat', sans-serif;
       color: var(--text-main);
       line-height: 1.6;
@@ -58,7 +58,7 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      background-color: var(--bg-warm-pink);
+      background-color: var(--bg-dark);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -74,12 +74,12 @@
 
     .gate-card {
       background-color: var(--card-bg);
-      padding: 50px 40px;
-      border-radius: 16px;
+      padding: 40px 30px;
+      border-radius: 20px;
       border: 1px solid var(--border-color);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.03);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
       text-align: center;
-      max-width: 420px;
+      max-width: 360px;
       width: 90%;
       position: relative;
       transition: transform 0.4s ease;
@@ -92,22 +92,22 @@
       left: 12px;
       right: 12px;
       bottom: 12px;
-      border: 1px solid rgba(245, 208, 97, 0.3);
-      border-radius: 12px;
+      border: 1px solid rgba(223, 75, 97, 0.15);
+      border-radius: 16px;
       pointer-events: none;
     }
 
     .gate-title {
-      font-size: 1.65rem;
+      font-size: 1.5rem;
       margin-bottom: 8px;
       color: var(--text-main);
     }
 
     .gate-subtitle {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
-      margin-bottom: 30px;
-      letter-spacing: 1px;
+      margin-bottom: 24px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
     }
 
@@ -121,9 +121,9 @@
       padding: 14px 20px;
       border-radius: 30px;
       border: 1px solid var(--border-color);
-      background-color: var(--bg-warm-pink);
+      background-color: var(--bg-dark);
       font-family: 'Montserrat', sans-serif;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       text-align: center;
       letter-spacing: 6px;
       color: var(--text-main);
@@ -137,11 +137,11 @@
     }
 
     .gate-btn {
-      background-color: var(--text-main);
+      background-color: var(--red-accent);
       color: #ffffff;
       font-family: 'Montserrat', sans-serif;
       font-size: 0.85rem;
-      font-weight: 500;
+      font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 2px;
       padding: 14px 28px;
@@ -153,14 +153,13 @@
     }
 
     .gate-btn:hover {
-      background-color: var(--red-accent);
-      box-shadow: 0 4px 15px rgba(207, 69, 92, 0.2);
+      background-color: var(--red-hover);
     }
 
     .gate-error {
       color: var(--red-accent);
       font-size: 0.8rem;
-      margin-top: 10px;
+      margin-top: 12px;
       height: 18px;
       opacity: 0;
       font-weight: 500;
@@ -171,7 +170,7 @@
       opacity: 1;
     }
 
-    /* Card shake on incorrect input */
+    /* Card shake animation */
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
       20%, 60% { transform: translateX(-8px); }
@@ -190,7 +189,7 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      background: radial-gradient(circle at center, rgba(255,255,255,0.9) 0%, rgba(253,245,245,0.7) 100%);
+      background: radial-gradient(circle at center, rgba(24, 21, 21, 0.4) 0%, rgba(15, 13, 13, 0.95) 100%);
       padding: 24px;
     }
 
@@ -202,23 +201,23 @@
     }
 
     .hero h1 {
-      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-size: clamp(2.2rem, 6vw, 4rem);
       color: var(--text-main);
       margin-bottom: 16px;
       letter-spacing: -0.5px;
     }
 
     .hero p.subtitle {
-      font-size: clamp(1rem, 2.5vw, 1.35rem);
+      font-size: clamp(0.9rem, 2.5vw, 1.2rem);
       color: var(--red-accent);
-      font-weight: 400;
-      letter-spacing: 2px;
+      font-weight: 500;
+      letter-spacing: 2.5px;
       text-transform: uppercase;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
     }
 
     .hero .description {
-      font-size: 1.05rem;
+      font-size: 1rem;
       color: var(--text-muted);
       max-width: 600px;
       margin: 0 auto 36px auto;
@@ -227,7 +226,7 @@
 
     .scroll-indicator {
       position: absolute;
-      bottom: 40px;
+      bottom: 30px;
       left: 50%;
       transform: translateX(-50%);
       animation: bounce 2s infinite;
@@ -237,33 +236,33 @@
 
     /* Vertical Timeline */
     section.timeline-section {
-      padding: 100px 0;
+      padding: 80px 0;
       border-top: 1px solid var(--border-color);
       background-color: var(--card-bg);
     }
 
     .section-title {
       text-align: center;
-      font-size: clamp(2rem, 4vw, 2.75rem);
-      margin-bottom: 16px;
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      margin-bottom: 12px;
       color: var(--text-main);
     }
 
     .section-subtitle {
       text-align: center;
       color: var(--text-muted);
-      font-weight: 300;
-      margin-bottom: 64px;
+      font-weight: 400;
+      margin-bottom: 48px;
       text-transform: uppercase;
       letter-spacing: 1.5px;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
     }
 
     .timeline {
       position: relative;
       max-width: 800px;
       margin: 0 auto;
-      padding: 20px 0;
+      padding: 10px 0;
     }
 
     .timeline::after {
@@ -278,7 +277,7 @@
     }
 
     .timeline-item {
-      padding: 10px 40px;
+      padding: 10px 30px;
       position: relative;
       background-color: inherit;
       width: 50%;
@@ -303,67 +302,66 @@
     .timeline-item::after {
       content: '';
       position: absolute;
-      width: 14px;
-      height: 14px;
-      right: -7px;
+      width: 12px;
+      height: 12px;
+      right: -6px;
       background-color: var(--card-bg);
       border: 3px solid var(--yellow-accent);
       top: 25px;
       border-radius: 50%;
       z-index: 1;
-      transition: background-color 0.3s ease;
     }
 
     .timeline-item.right::after {
-      left: -7px;
+      left: -6px;
     }
 
     .timeline-content {
-      padding: 28px;
-      background-color: var(--bg-warm-pink);
+      padding: 24px;
+      background-color: var(--bg-dark);
       position: relative;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
       border: 1px solid var(--border-color);
     }
 
     .timeline-date {
-      font-size: 0.85rem;
-      letter-spacing: 1.5px;
+      font-size: 0.8rem;
+      letter-spacing: 1px;
       text-transform: uppercase;
       color: var(--red-accent);
       font-weight: 600;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .timeline-title {
-      font-size: 1.35rem;
-      margin-bottom: 12px;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
       color: var(--text-main);
     }
 
     .timeline-body {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: var(--text-muted);
       font-weight: 300;
     }
 
     /* Voice Note Section */
     section.voice-note-section {
-      padding: 100px 0;
-      background-color: var(--bg-warm-pink);
+      padding: 80px 0;
+      background-color: var(--bg-dark);
       border-top: 1px solid var(--border-color);
       text-align: center;
     }
 
     .voice-card {
-      max-width: 650px;
+      max-width: 600px;
       margin: 0 auto;
       background-color: var(--card-bg);
-      padding: 48px;
-      border-radius: 16px;
+      padding: 40px 24px;
+      border-radius: 20px;
       border: 1px solid var(--border-color);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
       position: relative;
     }
 
@@ -372,8 +370,8 @@
       width: 48px;
       height: 48px;
       border-radius: 50%;
-      background: rgba(207, 69, 92, 0.1);
-      box-shadow: 0 0 0 0 rgba(207, 69, 92, 0.4);
+      background: rgba(223, 75, 97, 0.15);
+      box-shadow: 0 0 0 0 rgba(223, 75, 97, 0.4);
       animation: pulse 2s infinite;
       margin-bottom: 16px;
     }
@@ -384,20 +382,20 @@
     }
 
     .audio-player-container {
-      background-color: var(--bg-warm-pink);
+      background-color: var(--bg-dark);
       border-radius: 40px;
-      padding: 12px 24px;
+      padding: 12px 20px;
       border: 1px solid var(--border-color);
       display: flex;
       align-items: center;
-      margin: 30px 0;
+      margin: 24px 0;
     }
 
     .player-controls {
       display: flex;
       align-items: center;
       width: 100%;
-      gap: 16px;
+      gap: 14px;
     }
 
     .player-btn {
@@ -429,7 +427,7 @@
 
     .player-progress-bar {
       height: 6px;
-      background-color: rgba(30, 27, 27, 0.1);
+      background-color: rgba(255, 255, 255, 0.1);
       border-radius: 3px;
       position: relative;
       cursor: pointer;
@@ -438,7 +436,7 @@
     .player-progress-filled {
       height: 100%;
       width: 0%;
-      background-color: var(--text-main);
+      background-color: var(--yellow-accent);
       border-radius: 3px;
       position: absolute;
       top: 0;
@@ -453,15 +451,15 @@
     }
 
     .transcript-wrapper {
-      margin-top: 24px;
+      margin-top: 20px;
     }
 
     .transcript-toggle-btn {
       background: none;
       border: none;
       font-family: 'Montserrat', sans-serif;
-      font-size: 0.85rem;
-      color: var(--text-main);
+      font-size: 0.8rem;
+      color: var(--yellow-accent);
       cursor: pointer;
       font-weight: 600;
       display: flex;
@@ -472,15 +470,11 @@
       letter-spacing: 1px;
     }
 
-    .transcript-toggle-btn:hover {
-      color: var(--red-accent);
-    }
-
     .transcript-content {
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-      margin-top: 16px;
+      margin-top: 14px;
     }
 
     .transcript-content.expanded {
@@ -488,91 +482,98 @@
     }
 
     .tagalog-text {
-      font-size: 1rem;
+      font-size: 0.95rem;
       color: var(--text-muted);
       font-style: italic;
       line-height: 1.8;
       font-family: 'Playfair Display', serif;
       font-weight: 400;
-      padding: 0 12px;
+      padding: 0 8px;
     }
 
-    /* Dynamic Gallery */
+    /* Mobile Swipable Gallery Stack */
     section.gallery-section {
-      padding: 100px 0;
+      padding: 80px 0;
       background-color: var(--card-bg);
       border-top: 1px solid var(--border-color);
-    }
-
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 24px;
-      margin-top: 40px;
-    }
-
-    .gallery-card {
-      position: relative;
       overflow: hidden;
-      border-radius: 12px;
-      aspect-ratio: 4/5;
-      background-color: var(--bg-warm-pink);
-      border: 1px solid var(--border-color);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.01);
-      transition: transform var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1),
-                  box-shadow var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
-    .gallery-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+    .gallery-stack-container {
+      position: relative;
+      width: 320px;
+      height: 420px;
+      margin: 40px auto;
+      perspective: 1000px;
     }
 
-    .gallery-card img {
+    .swipe-card {
+      position: absolute;
       width: 100%;
       height: 100%;
+      background-color: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 16px 16px 40px 16px; /* Polaroid frame look */
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+      display: flex;
+      flex-direction: column;
+      transform-origin: 50% 100%;
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
+    }
+
+    .swipe-card:active {
+      cursor: grabbing;
+    }
+
+    .swipe-card img {
+      width: 100%;
+      height: 85%;
       object-fit: cover;
-      transition: transform var(--transition-speed) ease;
+      border-radius: 12px;
+      pointer-events: none;
     }
 
-    .gallery-card:hover img {
-      transform: scale(1.04);
-    }
-
-    .gallery-loader {
-      grid-column: 1 / -1;
+    .swipe-card-caption {
       text-align: center;
-      padding: 60px 0;
+      margin-top: auto;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
       color: var(--text-muted);
-      font-weight: 300;
+      font-size: 0.95rem;
     }
 
-    /* Spinner */
-    .spinner {
-      display: inline-block;
-      width: 30px;
-      height: 30px;
-      border: 2px solid var(--border-color);
-      border-radius: 50%;
-      border-top-color: var(--red-accent);
-      animation: spin 1s ease-in-out infinite;
-      margin-bottom: 16px;
+    .swipe-instruction {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
     }
 
     /* Letter Section */
     section.letter-section {
-      padding: 100px 0;
-      background-color: var(--bg-warm-pink);
+      padding: 80px 0;
+      background-color: var(--bg-dark);
       border-top: 1px solid var(--border-color);
     }
 
     .letter-card {
-      max-width: 750px;
+      max-width: 700px;
       margin: 0 auto;
       background-color: var(--card-bg);
-      padding: 60px 50px;
-      border-radius: 16px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.02);
+      padding: 50px 30px;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.4);
       border: 1px solid var(--border-color);
       position: relative;
     }
@@ -584,19 +585,19 @@
       left: 15px;
       right: 15px;
       bottom: 15px;
-      border: 1px solid rgba(245, 208, 97, 0.3); /* Subtle yellow internal border */
-      border-radius: 12px;
+      border: 1px solid rgba(223, 75, 97, 0.15);
+      border-radius: 16px;
       pointer-events: none;
     }
 
     .letter-salutation {
-      font-size: 1.5rem;
-      margin-bottom: 24px;
+      font-size: 1.35rem;
+      margin-bottom: 20px;
       color: var(--text-main);
     }
 
     .letter-body p {
-      font-size: 1.05rem;
+      font-size: 1rem;
       color: var(--text-muted);
       margin-bottom: 20px;
       font-weight: 300;
@@ -604,9 +605,9 @@
     }
 
     .letter-signature {
-      margin-top: 40px;
+      margin-top: 30px;
       text-align: right;
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       color: var(--red-accent);
       font-family: 'Playfair Display', serif;
       font-style: italic;
@@ -615,31 +616,30 @@
     /* Celebration Button & Canvas */
     .wish-container {
       text-align: center;
-      padding: 80px 0 120px 0;
-      background-color: var(--bg-warm-pink);
+      padding: 60px 0 100px 0;
+      background-color: var(--bg-dark);
     }
 
     .wish-btn {
       display: inline-block;
-      background-color: var(--text-main); /* Black background for structural contrast */
+      background-color: var(--red-accent);
       color: #ffffff;
       font-family: 'Montserrat', sans-serif;
-      font-size: 0.9rem;
-      font-weight: 500;
+      font-size: 0.85rem;
+      font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 2px;
       padding: 16px 36px;
       border: none;
       border-radius: 30px;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(30, 27, 27, 0.15);
+      box-shadow: 0 4px 15px rgba(223, 75, 97, 0.3);
       transition: all 0.3s ease;
     }
 
     .wish-btn:hover {
-      background-color: var(--red-accent); /* Soft red hover shift */
+      background-color: var(--red-hover);
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(207, 69, 92, 0.25);
     }
 
     .wish-btn:active {
@@ -665,7 +665,7 @@
     }
 
     footer p {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--text-muted);
       letter-spacing: 1px;
     }
@@ -693,15 +693,15 @@
     @keyframes pulse {
       0% {
         transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(207, 69, 92, 0.3);
+        box-shadow: 0 0 0 0 rgba(223, 75, 97, 0.4);
       }
       70% {
         transform: scale(1);
-        box-shadow: 0 0 0 10px rgba(207, 69, 92, 0);
+        box-shadow: 0 0 0 10px rgba(223, 75, 97, 0);
       }
       100% {
         transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(207, 69, 92, 0);
+        box-shadow: 0 0 0 0 rgba(223, 75, 97, 0);
       }
     }
 
@@ -716,8 +716,8 @@
       }
       .timeline-item {
         width: 100%;
-        padding-left: 70px;
-        padding-right: 20px;
+        padding-left: 55px;
+        padding-right: 15px;
       }
       .timeline-item.right {
         left: 0;
@@ -730,10 +730,10 @@
         left: 25px;
       }
       .letter-card {
-        padding: 40px 24px;
+        padding: 40px 20px;
       }
       .voice-card {
-        padding: 30px 20px;
+        padding: 30px 16px;
       }
     }
   </style>
@@ -839,13 +839,13 @@
               <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z"/>
             </svg>
           </div>
-          <h2 class="section-title" style="font-size: 1.75rem; margin-bottom: 4px;">The Voice That Changed Everything</h2>
-          <p class="section-subtitle" style="margin-bottom: 24px; font-size: 0.8rem; letter-spacing: 1px;">The moment you said yes</p>
+          <h2 class="section-title" style="font-size: 1.6rem; margin-bottom: 4px;">The Voice That Changed Everything</h2>
+          <p class="section-subtitle" style="margin-bottom: 24px; font-size: 0.75rem; letter-spacing: 1px;">The moment you said yes</p>
         </div>
 
         <!-- Custom Audio Player markup -->
         <div class="audio-player-container">
-          <audio id="love-audio" src="audio/recording_19.m4a" preload="metadata"></audio>
+          <audio id="love-audio" src="recording.mp3" preload="metadata"></audio>
           <div class="player-controls">
             <button class="player-btn" id="play-btn" onclick="toggleAudio()">
               <!-- Play Icon -->
@@ -888,17 +888,25 @@
     </div>
   </section>
 
-  <!-- Gallery Section -->
+  <!-- Gallery Section: Swipable Polaroid Stack -->
   <section class="gallery-section">
-    <div class="container">
+    <div class="container" style="display: flex; flex-direction: column; align-items: center;">
       <h2 class="section-title">Our Memory Lane</h2>
       <p class="section-subtitle">Every captured second since February</p>
       
-      <div class="gallery-grid" id="gallery-grid">
-        <div class="gallery-loader" id="gallery-loader">
+      <div class="gallery-stack-container" id="gallery-stack">
+        <!-- Swipable Cards will be injected dynamically here -->
+        <div class="gallery-loader" id="gallery-loader" style="margin-top: 150px;">
           <div class="spinner"></div>
           <p>Fetching memories from GitHub...</p>
         </div>
+      </div>
+
+      <div class="swipe-instruction">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+        </svg>
+        Swipe left or right
       </div>
     </div>
   </section>
@@ -951,58 +959,52 @@
       const correctPin = '071726'; // July 17, 2026
 
       if (pinField.value === correctPin) {
-        // Hide overlay and allow body scroll
         gateOverlay.classList.add('hidden');
         document.body.style.overflow = 'auto';
         
-        // Trigger celebratory shower on entry!
         setTimeout(() => {
           triggerCelebration();
         }, 500);
       } else {
-        // Handle incorrect input with a shake effect
         errEl.classList.add('show');
         gateCard.classList.add('shake');
         pinField.value = '';
         pinField.focus();
         
-        // Clear shake class after animation finishes
         setTimeout(() => {
           gateCard.classList.remove('shake');
         }, 400);
       }
     }
 
-    // Support typing Enter key on passcode
     document.getElementById('gate-pin').addEventListener('keypress', (e) => {
       if (e.key === 'Enter') {
         verifyPassword();
       }
     });
 
-    // Clear error label when user starts to write again
     document.getElementById('gate-pin').addEventListener('input', () => {
       document.getElementById('gate-err').classList.remove('show');
     });
 
 
     /* =========================================================================
-       2. REPO CONFIGURATION (Update this with your own details once deployed!)
+       2. REPO CONFIGURATION (Update with your username and repo name!)
        ========================================================================= */
     const GITHUB_CONFIG = {
-      username: 'ArkmJohn', // Change to your GitHub Username
-      repo: 'for-cel',           // Change to your Repository Name
-      folderPath: 'images'              // The directory where you drop your images
+      username: 'ArkmJohn',         // Updated with your GitHub username
+      repo: 'for-cel',              // Updated with your Repository Name
+      folderPath: 'images'          // Folder holding your images
     };
 
     /* =========================================================================
-       3. DYNAMIC GALLERY FETCH (GitHub REST API)
+       3. SWIPABLE POLAROID STACK LOGIC
        ========================================================================= */
     async function fetchGitHubImages() {
       const loader = document.getElementById('gallery-loader');
-      const grid = document.getElementById('gallery-grid');
+      const stackContainer = document.getElementById('gallery-stack');
       
-      if (GITHUB_CONFIG.username === 'YOUR_GITHUB_USERNAME') {
+      if (GITHUB_CONFIG.username === 'YOUR_GITHUB_USERNAME' || GITHUB_CONFIG.username === '') {
         renderLocalFallback();
         return;
       }
@@ -1018,42 +1020,163 @@
         );
 
         if (imageFiles.length === 0) {
-          loader.innerHTML = '<p>The images folder is empty. Push some photos to start!</p>';
+          loader.innerHTML = '<p style="color: var(--text-muted)">Your images folder is empty.</p>';
           return;
         }
 
-        grid.removeChild(loader);
-        imageFiles.forEach(file => {
-          const card = document.createElement('div');
-          card.className = 'gallery-card';
-          card.innerHTML = `<img src="${file.download_url}" alt="Cel and Me" loading="lazy">`;
-          grid.appendChild(card);
+        stackContainer.removeChild(loader);
+
+        // Render card stack (Reverse array so first image is on top)
+        imageFiles.reverse().forEach((file, index) => {
+          createSwipeCard(file.download_url, `Memory #${imageFiles.length - index}`);
         });
 
+        initSwipeGestures();
+
       } catch (error) {
-        console.warn('Could not load from GitHub API directly. Swapping to fallback paths.');
+        console.warn('Fallback local render due to local preview or network limits.');
         renderLocalFallback();
       }
     }
 
     function renderLocalFallback() {
       const loader = document.getElementById('gallery-loader');
-      const grid = document.getElementById('gallery-grid');
-      if (loader) grid.removeChild(loader);
+      const stackContainer = document.getElementById('gallery-stack');
+      if (loader) stackContainer.removeChild(loader);
 
       const fallbackImages = [
-        'images/feb_meeting.jpg',
-        'images/march_confession.jpg',
-        'images/april_asking.jpg',
-        'images/birthday.jpg'
+        { url: 'images/feb_meeting.jpg', label: 'Where it all started' },
+        { url: 'images/march_confession.jpg', label: 'Laying it all out' },
+        { url: 'images/april_asking.jpg', label: 'Meeting the family' },
+        { url: 'images/birthday.jpg', label: 'Happy Birthday, Babe' }
       ];
 
-      fallbackImages.forEach(path => {
-        const card = document.createElement('div');
-        card.className = 'gallery-card';
-        card.innerHTML = `<img src="${path}" alt="Memory with Cel" onerror="this.parentElement.style.display='none';">`;
-        grid.appendChild(card);
+      fallbackImages.reverse().forEach(img => {
+        createSwipeCard(img.url, img.label);
       });
+
+      initSwipeGestures();
+    }
+
+    function createSwipeCard(imageUrl, caption) {
+      const stackContainer = document.getElementById('gallery-stack');
+      const card = document.createElement('div');
+      card.className = 'swipe-card';
+      
+      card.innerHTML = `
+        <img src="${imageUrl}" alt="Memory with Cel" onerror="this.parentElement.style.display='none';">
+        <div class="swipe-card-caption">${caption}</div>
+      `;
+      stackContainer.appendChild(card);
+    }
+
+    // Interactive custom Card Swiper engine
+    function initSwipeGestures() {
+      const cards = document.querySelectorAll('.swipe-card');
+      let startX = 0;
+      let startY = 0;
+      let isDragging = false;
+      let currentCard = null;
+
+      // Layer cards using slight scale/rotation offset for beautiful organic feel
+      cards.forEach((card, i) => {
+        const offset = i * 3;
+        const scale = 1 - (i * 0.04);
+        card.style.transform = `scale(${scale}) translateY(${offset}px) rotate(${i % 2 === 0 ? 1 : -1}deg)`;
+        card.style.zIndex = cards.length - i;
+      });
+
+      const startDrag = (e) => {
+        if (isDragging) return;
+        
+        // Target topmost visible card only
+        const activeCards = Array.from(document.querySelectorAll('.swipe-card')).filter(c => !c.classList.contains('swiped'));
+        if (activeCards.length === 0) return;
+        currentCard = activeCards[0];
+
+        isDragging = true;
+        currentCard.style.transition = 'none';
+
+        const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+        const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+        startX = clientX;
+        startY = clientY;
+      };
+
+      const dragMove = (e) => {
+        if (!isDragging || !currentCard) return;
+
+        const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+        const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+        
+        const deltaX = clientX - startX;
+        const deltaY = clientY - startY;
+
+        // Rotate card slightly based on horizontal distance
+        const rotation = deltaX / 10;
+        currentCard.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(${rotation}deg)`;
+      };
+
+      const stopDrag = (e) => {
+        if (!isDragging || !currentCard) return;
+        isDragging = false;
+
+        const endX = e.type.includes('touch') ? e.changedTouches[0].clientX : e.clientX;
+        const deltaX = endX - startX;
+        const threshold = 120; // px displacement needed to register swipe
+
+        currentCard.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
+
+        if (Math.abs(deltaX) > threshold) {
+          // Swipe card away
+          const swipeOutWidth = window.innerWidth + 200;
+          const direction = deltaX > 0 ? 1 : -1;
+          currentCard.style.transform = `translate(${direction * swipeOutWidth}px, 0px) rotate(${direction * 30}deg)`;
+          currentCard.style.opacity = '0';
+          currentCard.classList.add('swiped');
+
+          // Recycle card to bottom of stack to loop indefinitely
+          const cardToRecycle = currentCard;
+          setTimeout(() => {
+            cardToRecycle.style.transition = 'none';
+            cardToRecycle.style.opacity = '1';
+            cardToRecycle.classList.remove('swiped');
+            
+            const stackContainer = document.getElementById('gallery-stack');
+            stackContainer.removeChild(cardToRecycle);
+            stackContainer.appendChild(cardToRecycle);
+            
+            // Re-order restacking heights
+            restackCards();
+          }, 500);
+
+        } else {
+          // Snap back to base position
+          currentCard.style.transform = `scale(1) translateY(0px) rotate(0deg)`;
+        }
+        currentCard = null;
+      };
+
+      function restackCards() {
+        const remainingCards = Array.from(document.querySelectorAll('.swipe-card'));
+        remainingCards.forEach((card, i) => {
+          const offset = i * 3;
+          const scale = 1 - (i * 0.04);
+          card.style.transition = 'transform 0.4s ease';
+          card.style.transform = `scale(${scale}) translateY(${offset}px) rotate(${i % 2 === 0 ? 1 : -1}deg)`;
+          card.style.zIndex = remainingCards.length - i;
+        });
+      }
+
+      // Hook up event listeners to container
+      const container = document.getElementById('gallery-stack');
+      container.addEventListener('mousedown', startDrag);
+      document.addEventListener('mousemove', dragMove);
+      document.addEventListener('mouseup', stopDrag);
+
+      container.addEventListener('touchstart', startDrag, { passive: true });
+      document.addEventListener('touchmove', dragMove, { passive: false });
+      document.addEventListener('touchend', stopDrag);
     }
 
     /* =========================================================================
@@ -1163,11 +1286,11 @@
 
       getRandomColor() {
         const colors = [
-          '#f5d061', // Warm Yellow
-          '#cf455c', // Crimson Red
-          '#f0a5a5', // Soft Pink
-          '#1e1b1b', // Structural Off-Black
-          '#ffffff'  // Romantic Pure White
+          '#f5d061', // Champagne Yellow
+          '#df4b61', // Soft Crimson Red
+          '#f0a5a5', // Soft blush pink
+          '#ffffff', // Dreamy White
+          '#2b2223'  // Dark chocolate contrast accents
         ];
         return colors[Math.floor(Math.random() * colors.length)];
       }
