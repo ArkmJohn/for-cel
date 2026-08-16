@@ -12,14 +12,16 @@
   
   <style>
     :root {
-      --bg-warm-cream: #faf7f2;
-      --card-bg: #ffffff;
-      --text-main: #2c2a29;
-      --text-muted: #6e6a66;
-      --gold-accent: #c5a059;
-      --gold-hover: #b38e47;
-      --rose-accent: #e3b3a3;
-      --border-color: #f0e9df;
+      --bg-warm-pink: #fdf5f5;      /* Extremely soft, romantic blush pink */
+      --card-bg: #ffffff;           /* Crisp card backgrounds */
+      --text-main: #1e1b1b;         /* Rich off-black for high-contrast structure */
+      --text-muted: #5e5253;        /* Soft charcoal-burgundy for body text */
+      --yellow-accent: #f5d061;     /* Warm champagne yellow for highlights */
+      --yellow-hover: #e0bc4f; 
+      --pink-accent: #f0a5a5;       /* Romantic mid-tone pink */
+      --red-accent: #cf455c;        /* Soft crimson for main action elements */
+      --red-hover: #b53248;
+      --border-color: #f7e1e1;      /* Light pink-gold border */
       --transition-speed: 0.4s;
     }
 
@@ -30,7 +32,7 @@
     }
 
     body {
-      background-color: var(--bg-warm-cream);
+      background-color: var(--bg-warm-pink);
       font-family: 'Montserrat', sans-serif;
       color: var(--text-main);
       line-height: 1.6;
@@ -49,6 +51,137 @@
       padding: 0 24px;
     }
 
+    /* Password Gate Overlay */
+    #password-gate {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: var(--bg-warm-pink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100000;
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s ease;
+    }
+
+    #password-gate.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .gate-card {
+      background-color: var(--card-bg);
+      padding: 50px 40px;
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.03);
+      text-align: center;
+      max-width: 420px;
+      width: 90%;
+      position: relative;
+      transition: transform 0.4s ease;
+    }
+
+    .gate-card::before {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      border: 1px solid rgba(245, 208, 97, 0.3);
+      border-radius: 12px;
+      pointer-events: none;
+    }
+
+    .gate-title {
+      font-size: 1.65rem;
+      margin-bottom: 8px;
+      color: var(--text-main);
+    }
+
+    .gate-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 30px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .gate-input-wrapper {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .gate-input {
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 30px;
+      border: 1px solid var(--border-color);
+      background-color: var(--bg-warm-pink);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.1rem;
+      text-align: center;
+      letter-spacing: 6px;
+      color: var(--text-main);
+      font-weight: 600;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .gate-input:focus {
+      border-color: var(--red-accent);
+    }
+
+    .gate-btn {
+      background-color: var(--text-main);
+      color: #ffffff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      padding: 14px 28px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+
+    .gate-btn:hover {
+      background-color: var(--red-accent);
+      box-shadow: 0 4px 15px rgba(207, 69, 92, 0.2);
+    }
+
+    .gate-error {
+      color: var(--red-accent);
+      font-size: 0.8rem;
+      margin-top: 10px;
+      height: 18px;
+      opacity: 0;
+      font-weight: 500;
+      transition: opacity 0.3s ease;
+    }
+
+    .gate-error.show {
+      opacity: 1;
+    }
+
+    /* Card shake on incorrect input */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    .shake {
+      animation: shake 0.4s ease-in-out;
+    }
+
     /* Hero Section */
     header.hero {
       position: relative;
@@ -57,7 +190,7 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      background: radial-gradient(circle at center, rgba(255,255,255,0.8) 0%, rgba(250,247,242,0.6) 100%);
+      background: radial-gradient(circle at center, rgba(255,255,255,0.9) 0%, rgba(253,245,245,0.7) 100%);
       padding: 24px;
     }
 
@@ -77,8 +210,8 @@
 
     .hero p.subtitle {
       font-size: clamp(1rem, 2.5vw, 1.35rem);
-      color: var(--gold-accent);
-      font-weight: 300;
+      color: var(--red-accent);
+      font-weight: 400;
       letter-spacing: 2px;
       text-transform: uppercase;
       margin-bottom: 24px;
@@ -98,7 +231,7 @@
       left: 50%;
       transform: translateX(-50%);
       animation: bounce 2s infinite;
-      color: var(--gold-accent);
+      color: var(--red-accent);
       cursor: pointer;
     }
 
@@ -106,6 +239,7 @@
     section.timeline-section {
       padding: 100px 0;
       border-top: 1px solid var(--border-color);
+      background-color: var(--card-bg);
     }
 
     .section-title {
@@ -135,12 +269,12 @@
     .timeline::after {
       content: '';
       position: absolute;
-      width: 1px;
+      width: 2px;
       background-color: var(--border-color);
       top: 0;
       bottom: 0;
       left: 50%;
-      margin-left: -0.5px;
+      margin-left: -1px;
     }
 
     .timeline-item {
@@ -169,11 +303,11 @@
     .timeline-item::after {
       content: '';
       position: absolute;
-      width: 12px;
-      height: 12px;
-      right: -6px;
-      background-color: var(--bg-warm-cream);
-      border: 2px solid var(--gold-accent);
+      width: 14px;
+      height: 14px;
+      right: -7px;
+      background-color: var(--card-bg);
+      border: 3px solid var(--yellow-accent);
       top: 25px;
       border-radius: 50%;
       z-index: 1;
@@ -181,12 +315,12 @@
     }
 
     .timeline-item.right::after {
-      left: -6px;
+      left: -7px;
     }
 
     .timeline-content {
       padding: 28px;
-      background-color: var(--card-bg);
+      background-color: var(--bg-warm-pink);
       position: relative;
       border-radius: 12px;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
@@ -197,7 +331,7 @@
       font-size: 0.85rem;
       letter-spacing: 1.5px;
       text-transform: uppercase;
-      color: var(--gold-accent);
+      color: var(--red-accent);
       font-weight: 600;
       margin-bottom: 8px;
     }
@@ -217,7 +351,7 @@
     /* Voice Note Section */
     section.voice-note-section {
       padding: 100px 0;
-      background-color: var(--card-bg);
+      background-color: var(--bg-warm-pink);
       border-top: 1px solid var(--border-color);
       text-align: center;
     }
@@ -225,11 +359,11 @@
     .voice-card {
       max-width: 650px;
       margin: 0 auto;
-      background-color: var(--bg-warm-cream);
+      background-color: var(--card-bg);
       padding: 48px;
       border-radius: 16px;
       border: 1px solid var(--border-color);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.01);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.02);
       position: relative;
     }
 
@@ -238,19 +372,19 @@
       width: 48px;
       height: 48px;
       border-radius: 50%;
-      background: rgba(197, 160, 89, 0.1);
-      box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.4);
+      background: rgba(207, 69, 92, 0.1);
+      box-shadow: 0 0 0 0 rgba(207, 69, 92, 0.4);
       animation: pulse 2s infinite;
       margin-bottom: 16px;
     }
 
     .pulse-svg {
-      color: var(--gold-accent);
+      color: var(--red-accent);
       margin-top: 12px;
     }
 
     .audio-player-container {
-      background-color: var(--card-bg);
+      background-color: var(--bg-warm-pink);
       border-radius: 40px;
       padding: 12px 24px;
       border: 1px solid var(--border-color);
@@ -267,7 +401,7 @@
     }
 
     .player-btn {
-      background-color: var(--gold-accent);
+      background-color: var(--red-accent);
       color: white;
       border: none;
       width: 44px;
@@ -282,7 +416,7 @@
     }
 
     .player-btn:hover {
-      background-color: var(--gold-hover);
+      background-color: var(--red-hover);
     }
 
     .player-progress-area {
@@ -295,7 +429,7 @@
 
     .player-progress-bar {
       height: 6px;
-      background-color: var(--border-color);
+      background-color: rgba(30, 27, 27, 0.1);
       border-radius: 3px;
       position: relative;
       cursor: pointer;
@@ -304,7 +438,7 @@
     .player-progress-filled {
       height: 100%;
       width: 0%;
-      background-color: var(--gold-accent);
+      background-color: var(--text-main);
       border-radius: 3px;
       position: absolute;
       top: 0;
@@ -327,15 +461,19 @@
       border: none;
       font-family: 'Montserrat', sans-serif;
       font-size: 0.85rem;
-      color: var(--gold-accent);
+      color: var(--text-main);
       cursor: pointer;
-      font-weight: 500;
+      font-weight: 600;
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 0 auto;
       text-transform: uppercase;
       letter-spacing: 1px;
+    }
+
+    .transcript-toggle-btn:hover {
+      color: var(--red-accent);
     }
 
     .transcript-content {
@@ -362,7 +500,7 @@
     /* Dynamic Gallery */
     section.gallery-section {
       padding: 100px 0;
-      background-color: var(--bg-warm-cream);
+      background-color: var(--card-bg);
       border-top: 1px solid var(--border-color);
     }
 
@@ -378,7 +516,7 @@
       overflow: hidden;
       border-radius: 12px;
       aspect-ratio: 4/5;
-      background-color: var(--bg-warm-cream);
+      background-color: var(--bg-warm-pink);
       border: 1px solid var(--border-color);
       box-shadow: 0 4px 15px rgba(0,0,0,0.01);
       transition: transform var(--transition-speed) cubic-bezier(0.16, 1, 0.3, 1),
@@ -416,7 +554,7 @@
       height: 30px;
       border: 2px solid var(--border-color);
       border-radius: 50%;
-      border-top-color: var(--gold-accent);
+      border-top-color: var(--red-accent);
       animation: spin 1s ease-in-out infinite;
       margin-bottom: 16px;
     }
@@ -424,7 +562,7 @@
     /* Letter Section */
     section.letter-section {
       padding: 100px 0;
-      background-color: var(--card-bg);
+      background-color: var(--bg-warm-pink);
       border-top: 1px solid var(--border-color);
     }
 
@@ -446,7 +584,7 @@
       left: 15px;
       right: 15px;
       bottom: 15px;
-      border: 1px solid rgba(197, 160, 89, 0.2);
+      border: 1px solid rgba(245, 208, 97, 0.3); /* Subtle yellow internal border */
       border-radius: 12px;
       pointer-events: none;
     }
@@ -469,7 +607,7 @@
       margin-top: 40px;
       text-align: right;
       font-size: 1.25rem;
-      color: var(--gold-accent);
+      color: var(--red-accent);
       font-family: 'Playfair Display', serif;
       font-style: italic;
     }
@@ -478,12 +616,12 @@
     .wish-container {
       text-align: center;
       padding: 80px 0 120px 0;
-      background-color: var(--bg-warm-cream);
+      background-color: var(--bg-warm-pink);
     }
 
     .wish-btn {
       display: inline-block;
-      background-color: var(--gold-accent);
+      background-color: var(--text-main); /* Black background for structural contrast */
       color: #ffffff;
       font-family: 'Montserrat', sans-serif;
       font-size: 0.9rem;
@@ -494,14 +632,14 @@
       border: none;
       border-radius: 30px;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(197, 160, 89, 0.2);
+      box-shadow: 0 4px 15px rgba(30, 27, 27, 0.15);
       transition: all 0.3s ease;
     }
 
     .wish-btn:hover {
-      background-color: var(--gold-hover);
+      background-color: var(--red-accent); /* Soft red hover shift */
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(197, 160, 89, 0.35);
+      box-shadow: 0 6px 20px rgba(207, 69, 92, 0.25);
     }
 
     .wish-btn:active {
@@ -555,15 +693,15 @@
     @keyframes pulse {
       0% {
         transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.3);
+        box-shadow: 0 0 0 0 rgba(207, 69, 92, 0.3);
       }
       70% {
         transform: scale(1);
-        box-shadow: 0 0 0 10px rgba(197, 160, 89, 0);
+        box-shadow: 0 0 0 10px rgba(207, 69, 92, 0);
       }
       100% {
         transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(197, 160, 89, 0);
+        box-shadow: 0 0 0 0 rgba(207, 69, 92, 0);
       }
     }
 
@@ -600,7 +738,23 @@
     }
   </style>
 </head>
-<body>
+<body style="overflow: hidden;"> <!-- Body locked initially until passcode unlocks it -->
+
+  <!-- Password Entry Gate Overlay -->
+  <div id="password-gate">
+    <div class="gate-card">
+      <p class="gate-subtitle">Private Archive</p>
+      <h2 class="gate-title serif-font">Our Special Date</h2>
+      <p class="gate-subtitle" style="font-size: 0.75rem; color: var(--red-accent); margin-bottom: 24px;">Enter passcode (MMDDYY) to unlock</p>
+      
+      <div class="gate-input-wrapper">
+        <input type="password" id="gate-pin" class="gate-input" maxlength="6" placeholder="******" autocomplete="off" autofocus>
+      </div>
+      
+      <button class="gate-btn" onclick="verifyPassword()">Enter Site</button>
+      <div id="gate-err" class="gate-error">Incorrect date. Hint: The day we became official.</div>
+    </div>
+  </div>
 
   <!-- Celebration Canvas (Overlay) -->
   <canvas id="celebration-canvas"></canvas>
@@ -689,7 +843,7 @@
           <p class="section-subtitle" style="margin-bottom: 24px; font-size: 0.8rem; letter-spacing: 1px;">The moment you said yes</p>
         </div>
 
-        <!-- HTML5 Custom Player markup -->
+        <!-- Custom Audio Player markup -->
         <div class="audio-player-container">
           <audio id="love-audio" src="audio/recording_19.m4a" preload="metadata"></audio>
           <div class="player-controls">
@@ -715,7 +869,7 @@
           </div>
         </div>
 
-        <!-- Interactive Transcript Accoridon -->
+        <!-- Interactive Transcript Accordion -->
         <div class="transcript-wrapper">
           <button class="transcript-toggle-btn" onclick="toggleTranscript()">
             Read her message
@@ -787,7 +941,53 @@
   <!-- Scripts -->
   <script>
     /* =========================================================================
-       1. REPO CONFIGURATION (Update this with your own details!)
+       1. PASSCODE GATE VALIDATION
+       ========================================================================= */
+    function verifyPassword() {
+      const pinField = document.getElementById('gate-pin');
+      const errEl = document.getElementById('gate-err');
+      const gateCard = document.querySelector('.gate-card');
+      const gateOverlay = document.getElementById('password-gate');
+      const correctPin = '071726'; // July 17, 2026
+
+      if (pinField.value === correctPin) {
+        // Hide overlay and allow body scroll
+        gateOverlay.classList.add('hidden');
+        document.body.style.overflow = 'auto';
+        
+        // Trigger celebratory shower on entry!
+        setTimeout(() => {
+          triggerCelebration();
+        }, 500);
+      } else {
+        // Handle incorrect input with a shake effect
+        errEl.classList.add('show');
+        gateCard.classList.add('shake');
+        pinField.value = '';
+        pinField.focus();
+        
+        // Clear shake class after animation finishes
+        setTimeout(() => {
+          gateCard.classList.remove('shake');
+        }, 400);
+      }
+    }
+
+    // Support typing Enter key on passcode
+    document.getElementById('gate-pin').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') {
+        verifyPassword();
+      }
+    });
+
+    // Clear error label when user starts to write again
+    document.getElementById('gate-pin').addEventListener('input', () => {
+      document.getElementById('gate-err').classList.remove('show');
+    });
+
+
+    /* =========================================================================
+       2. REPO CONFIGURATION (Update this with your own details once deployed!)
        ========================================================================= */
     const GITHUB_CONFIG = {
       username: 'ArkmJohn', // Change to your GitHub Username
@@ -796,7 +996,7 @@
     };
 
     /* =========================================================================
-       2. DYNAMIC GALLERY FETCH (GitHub REST API)
+       3. DYNAMIC GALLERY FETCH (GitHub REST API)
        ========================================================================= */
     async function fetchGitHubImages() {
       const loader = document.getElementById('gallery-loader');
@@ -857,7 +1057,7 @@
     }
 
     /* =========================================================================
-       3. CUSTOM AUDIO PLAYER INTERFACE LOGIC
+       4. CUSTOM AUDIO PLAYER INTERFACE LOGIC
        ========================================================================= */
     const audio = document.getElementById('love-audio');
     const playBtn = document.getElementById('play-btn');
@@ -892,7 +1092,6 @@
       totalDurationEl.textContent = formatTime(audio.duration);
     });
 
-    // Support browser fallback if loadedmetadata loads late
     audio.addEventListener('durationchange', () => {
       totalDurationEl.textContent = formatTime(audio.duration);
     });
@@ -918,7 +1117,7 @@
     });
 
     /* =========================================================================
-       4. TRANSCRIPT ACCORDION TOGGLE
+       5. TRANSCRIPT ACCORDION TOGGLE
        ========================================================================= */
     function toggleTranscript() {
       const content = document.getElementById('transcript-content');
@@ -933,7 +1132,7 @@
     }
 
     /* =========================================================================
-       5. INTERACTIVE CONFETTI & HEARTS SHOWER EFFECT (Canvas-based)
+       6. INTERACTIVE CONFETTI & HEARTS SHOWER EFFECT (Canvas-based)
        ========================================================================= */
     const canvas = document.getElementById('celebration-canvas');
     const ctx = canvas.getContext('2d');
@@ -955,7 +1154,7 @@
         this.speedX = Math.random() * 6 - 3;
         this.speedY = Math.random() * -6 - 4;
         this.gravity = 0.15;
-        this.type = Math.random() > 0.4 ? 'heart' : 'confetti';
+        this.type = Math.random() > 0.45 ? 'heart' : 'confetti';
         this.color = this.getRandomColor();
         this.opacity = 1;
         this.rotation = Math.random() * 360;
@@ -964,11 +1163,11 @@
 
       getRandomColor() {
         const colors = [
-          '#c5a059', // Gold
-          '#e3b3a3', // Rose Gold
-          '#f5e3db', // Warm Cream
-          '#ffb3c1', // Soft Pink
-          '#ff85a1'  // Pink blush
+          '#f5d061', // Warm Yellow
+          '#cf455c', // Crimson Red
+          '#f0a5a5', // Soft Pink
+          '#1e1b1b', // Structural Off-Black
+          '#ffffff'  // Romantic Pure White
         ];
         return colors[Math.floor(Math.random() * colors.length)];
       }
@@ -977,7 +1176,7 @@
         this.speedY += this.gravity;
         this.x += this.speedX;
         this.y += this.speedY;
-        this.opacity -= 0.01;
+        this.opacity -= 0.015;
         this.rotation += this.rotationSpeed;
       }
 
@@ -1038,7 +1237,7 @@
     }
 
     /* =========================================================================
-       6. SCROLL ANIMATION TRIGGER FOR TIMELINE
+       7. SCROLL ANIMATION TRIGGER FOR TIMELINE
        ========================================================================= */
     function checkTimelineScroll() {
       const items = document.querySelectorAll('.timeline-item');
