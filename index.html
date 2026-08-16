@@ -724,6 +724,60 @@
         padding: 30px 16px;
       }
     }
+
+    /* Stitch & Angel Floating Entrance */
+    .hero-illustration {
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .stitch-angel-img {
+      width: 150px; /* Perfect size above the header */
+      height: auto;
+      filter: drop-shadow(0 8px 16px rgba(240, 165, 165, 0.25)); /* Soft glowing pink aura */
+      animation: float-love 4s ease-in-out infinite; /* Smooth floating effect */
+      user-select: none;
+      pointer-events: none;
+    }
+
+    @keyframes float-love {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+     /* Simple Cake & Candle styling */
+    .cake-wrapper {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .cake-svg {
+      width: 110px;
+      height: 110px;
+      filter: drop-shadow(0 0 12px rgba(245, 208, 97, 0.25)); /* Warm golden aura */
+    }
+
+    /* Tactile flame flicker (Zero performance lag) */
+    .cake-flame {
+      animation: flameFlicker 0.6s infinite alternate ease-in-out;
+      transform-origin: 60px 26px; /* Anchor animation to bottom of flame */
+    }
+
+    @keyframes flameFlicker {
+      0% {
+        transform: scale(0.95) rotate(-2deg);
+        opacity: 0.85;
+      }
+      100% {
+        transform: scale(1.1) rotate(2deg);
+        opacity: 1;
+        filter: drop-shadow(0 0 8px var(--yellow-accent));
+      }
+    }
   </style>
 </head>
 <body style="overflow: hidden;"> <!-- Body locked initially until passcode unlocks it -->
@@ -750,8 +804,12 @@
   <!-- Hero Section -->
   <header class="hero">
     <div class="hero-content">
+       <!-- Stitch & Angel Transparent Illustration -->
+      <div class="hero-illustration">
+         <img src="stitch-angel2.png" alt="Stitch and Angel" class="stitch-angel-img">
+      </div>
       <p class="subtitle">Happy Birthday, Cel</p>
-      <h1>A Repo of Our Journey</h1>
+      <h1>A Notebook of Our Journey</h1>
       <p class="description">
         Babe, this is a living archive built to preserve every chapter, conversation, and milestone we share. From our beautiful start in February to every season that lies ahead, this space will grow alongside us.
       </p>
@@ -931,8 +989,37 @@
     </div>
   </section>
 
-  <!-- Make a Wish Call to Action -->
+    <!-- Make a Wish Call to Action -->
   <div class="wish-container">
+    
+    <!-- Interactive Birthday Cake & Flickering Candle -->
+    <div class="cake-wrapper">
+      <svg class="cake-svg" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Plate -->
+        <ellipse cx="60" cy="95" rx="45" ry="8" fill="var(--card-bg)" stroke="var(--border-color)" stroke-width="2"/>
+        <path d="M15 95 C15 105, 105 105, 105 95" fill="none" stroke="var(--border-color)" stroke-width="3" stroke-linecap="round"/>
+        
+        <!-- Cake Base Layer -->
+        <path d="M30 65 L30 90 C30 95, 90 95, 90 90 L90 65 Z" fill="var(--card-bg)" stroke="var(--border-color)" stroke-width="2"/>
+        
+        <!-- Frosting Layer & Drips -->
+        <path d="M30 65 C35 70, 40 70, 45 65 C50 72, 55 72, 60 65 C65 70, 70 70, 75 65 C80 73, 85 73, 90 65 L90 55 C90 55, 30 55, 30 55 Z" fill="var(--text-main)"/>
+        <rect x="30" y="52" width="60" height="8" fill="var(--text-main)"/>
+        
+        <!-- Decorative Hearts on Frosting -->
+        <path d="M45 80 C43 78, 41 80, 45 84 C49 80, 47 78, 45 80 Z" fill="var(--red-accent)"/>
+        <path d="M60 80 C58 78, 56 80, 60 84 C64 80, 62 78, 60 80 Z" fill="var(--yellow-accent)"/>
+        <path d="M75 80 C73 78, 71 80, 75 84 C79 80, 77 78, 75 80 Z" fill="var(--red-accent)"/>
+
+        <!-- The Candle -->
+        <rect x="58" y="28" width="4" height="25" rx="1" fill="var(--red-accent)"/>
+        <path d="M58 35 L62 33 M58 43 L62 41 M58 51 L62 49" stroke="var(--yellow-accent)" stroke-width="1.5"/>
+
+        <!-- Flickering Flame -->
+        <path class="cake-flame" d="M60 5 C56 16, 56 22, 60 26 C64 22, 64 16, 60 5 Z" fill="var(--yellow-accent)"/>
+      </svg>
+    </div>
+
     <button class="wish-btn" id="wish-btn" onclick="triggerCelebration()">Click to Make a Wish</button>
   </div>
 
