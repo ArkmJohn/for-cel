@@ -820,6 +820,7 @@
 
         <!-- Custom Audio Player markup -->
         <div class="audio-player-container">
+          <!-- Audio source correctly set back to audio/recording_19.m4a -->
           <audio id="love-audio" src="audio/recording_19.m4a" preload="metadata"></audio>
           <div class="player-controls">
             <button class="player-btn" id="play-btn" onclick="toggleAudio()">
@@ -971,7 +972,7 @@
     };
 
     /* =========================================================================
-       3. HIGH-PERFORMANCE GPU GESTURAL STACK CONTROLLER (Tinder/Polaroid Physics)
+       3. HIGH-PERFORMANCE GPU GESTURAL STACK CONTROLLER (Fixed Card Target Bug)
        ========================================================================= */
     function initSwipeStack(containerId) {
       const container = document.getElementById(containerId);
@@ -981,7 +982,7 @@
       let startX = 0;
       let startY = 0;
       let currentCard = null;
-      let rafId = null; // Rendering frame holder
+      let rafId = null; 
 
       function restack() {
         const cards = Array.from(container.querySelectorAll('.swipe-card:not(.swiped)'));
@@ -989,7 +990,7 @@
           const offset = i * 4;
           const scale = 1 - (i * 0.04);
           card.style.transition = 'transform 0.4s ease, opacity 0.4s ease';
-          // Use translate3d to offload composite layers directly to GPU
+          // Force layers straight into composite stage on GPU
           card.style.transform = `translate3d(0, ${offset}px, 0) scale(${scale}) rotate(${i % 2 === 0 ? 1 : -1}deg)`;
           card.style.zIndex = cards.length - i;
         });
@@ -1001,6 +1002,8 @@
         if (isDragging) return;
         const cards = Array.from(container.querySelectorAll('.swipe-card:not(.swiped)'));
         if (cards.length === 0) return;
+        
+        // Grab exactly the topmost active card element
         currentCard = cards; 
 
         isDragging = true;
@@ -1015,7 +1018,7 @@
       const dragMove = (e) => {
         if (!isDragging || !currentCard) return;
 
-        // Prevent natural mobile screen scroll bouncing only when manipulating slides
+        // Block elastic bounce scrolling specifically during cards dragging
         if (e.cancelable) e.preventDefault();
 
         const clientX = e.type.includes('touch') ? e.touches.clientX : e.clientX;
@@ -1024,7 +1027,7 @@
         const deltaX = clientX - startX;
         const deltaY = clientY - startY;
 
-        // Throttles coordinate changes to align perfectly with screen refresh rate
+        // Throttles rendering tasks to align natively with 60hz / 120hz panels
         if (rafId) cancelAnimationFrame(rafId);
         rafId = requestAnimationFrame(() => {
           const rotation = deltaX / 12;
@@ -1072,7 +1075,6 @@
       document.addEventListener('mouseup', stopDrag);
 
       container.addEventListener('touchstart', startDrag, { passive: true });
-      // touchmove must be non-passive to allow calling e.preventDefault() during dragging
       document.addEventListener('touchmove', dragMove, { passive: false });
       document.addEventListener('touchend', stopDrag);
     }
@@ -1110,9 +1112,7 @@
         imageFiles.reverse().forEach((file) => {
           let parsedLabel = "";
           
-          // Check if filename starts with "label-"
           if (file.name.toLowerCase().startsWith("label-")) {
-            // Strip out "label-", file extension, replace dashes/underscores with space
             const rawText = file.name.slice(6).split('.');
             const cleanedText = rawText.replace(/[-_]/g, ' ');
             parsedLabel = cleanedText.charAt(0).toUpperCase() + cleanedText.slice(1);
@@ -1138,7 +1138,7 @@
         { url: 'images/feb_meeting.jpg', label: 'Where it all started' },
         { url: 'images/march_confession.jpg', label: 'Laying it all out' },
         { url: 'images/april_asking.jpg', label: 'Meeting the family' },
-        { url: 'images/birthday.jpg', label: '' } // No label demo
+        { url: 'images/birthday.jpg', label: '' } 
       ];
 
       fallbackImages.reverse().forEach(img => {
