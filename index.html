@@ -49,6 +49,9 @@
       max-width: 1100px;
       margin: 0 auto;
       padding: 0 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     /* Password Gate Overlay */
@@ -170,7 +173,6 @@
       opacity: 1;
     }
 
-    /* Card shake animation */
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
       20%, 60% { transform: translateX(-8px); }
@@ -191,6 +193,7 @@
       text-align: center;
       background: radial-gradient(circle at center, rgba(24, 21, 21, 0.4) 0%, rgba(15, 13, 13, 0.95) 100%);
       padding: 24px;
+      width: 100%;
     }
 
     .hero-content {
@@ -234,11 +237,23 @@
       cursor: pointer;
     }
 
-    /* Vertical Timeline */
-    section.timeline-section {
+    /* Shared Swipable Stack Containers */
+    section.stack-section {
+      width: 100%;
       padding: 80px 0;
       border-top: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    section.timeline-section {
       background-color: var(--card-bg);
+    }
+
+    section.gallery-section {
+      background-color: var(--bg-dark);
     }
 
     .section-title {
@@ -252,102 +267,125 @@
       text-align: center;
       color: var(--text-muted);
       font-weight: 400;
-      margin-bottom: 48px;
+      margin-bottom: 32px;
       text-transform: uppercase;
       letter-spacing: 1.5px;
       font-size: 0.8rem;
     }
 
-    .timeline {
+    .stack-container {
       position: relative;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 10px 0;
+      width: 320px;
+      height: 420px;
+      margin: 20px auto;
+      perspective: 1000px;
     }
 
-    .timeline::after {
-      content: '';
+    /* Swipe Card Base */
+    .swipe-card {
       position: absolute;
-      width: 2px;
-      background-color: var(--border-color);
-      top: 0;
-      bottom: 0;
-      left: 50%;
-      margin-left: -1px;
-    }
-
-    .timeline-item {
-      padding: 10px 30px;
-      position: relative;
-      background-color: inherit;
-      width: 50%;
-      opacity: 0;
-      transform: translateY(30px);
-      transition: all 0.8s ease;
-    }
-
-    .timeline-item.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .timeline-item.left {
-      left: 0;
-    }
-
-    .timeline-item.right {
-      left: 50%;
-    }
-
-    .timeline-item::after {
-      content: '';
-      position: absolute;
-      width: 12px;
-      height: 12px;
-      right: -6px;
-      background-color: var(--card-bg);
-      border: 3px solid var(--yellow-accent);
-      top: 25px;
-      border-radius: 50%;
-      z-index: 1;
-    }
-
-    .timeline-item.right::after {
-      left: -6px;
-    }
-
-    .timeline-content {
-      padding: 24px;
+      width: 100%;
+      height: 100%;
       background-color: var(--bg-dark);
-      position: relative;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
       border: 1px solid var(--border-color);
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      cursor: grab;
+      user-select: none;
+      touch-action: none;
+      display: flex;
+      flex-direction: column;
+      transform-origin: 50% 100%;
+      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
+    }
+
+    .swipe-card:active {
+      cursor: grabbing;
+    }
+
+    /* Polaroid Gallery Card Specifics */
+    .gallery-card {
+      padding: 16px 16px 48px 16px;
+    }
+
+    .gallery-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      pointer-events: none;
+    }
+
+    .gallery-card.has-caption img {
+      height: 82%; /* Compresses only if custom label exists */
+    }
+
+    .swipe-card-caption {
+      text-align: center;
+      margin-top: auto;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      padding-top: 12px;
+    }
+
+    /* Timeline Card Specifics */
+    .timeline-card {
+      background-color: var(--card-bg);
+      padding: 36px 28px;
+      justify-content: center;
+      border: 1px solid rgba(245, 208, 97, 0.15);
+    }
+
+    .timeline-card::before {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      border: 1px solid rgba(245, 208, 97, 0.1);
+      border-radius: 16px;
+      pointer-events: none;
     }
 
     .timeline-date {
-      font-size: 0.8rem;
-      letter-spacing: 1px;
+      font-size: 0.85rem;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
       color: var(--red-accent);
       font-weight: 600;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
 
     .timeline-title {
-      font-size: 1.2rem;
-      margin-bottom: 10px;
+      font-size: 1.5rem;
+      margin-bottom: 16px;
       color: var(--text-main);
     }
 
     .timeline-body {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: var(--text-muted);
       font-weight: 300;
+      line-height: 1.7;
+    }
+
+    .swipe-instruction {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 15px;
     }
 
     /* Voice Note Section */
     section.voice-note-section {
+      width: 100%;
       padding: 80px 0;
       background-color: var(--bg-dark);
       border-top: 1px solid var(--border-color);
@@ -491,77 +529,28 @@
       padding: 0 8px;
     }
 
-    /* Mobile Swipable Gallery Stack */
-    section.gallery-section {
-      padding: 80px 0;
-      background-color: var(--card-bg);
-      border-top: 1px solid var(--border-color);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    .gallery-stack-container {
-      position: relative;
-      width: 320px;
-      height: 420px;
-      margin: 40px auto;
-      perspective: 1000px;
-    }
-
-    .swipe-card {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background-color: var(--bg-dark);
-      border: 1px solid var(--border-color);
-      border-radius: 20px;
-      padding: 16px 16px 40px 16px; /* Polaroid frame look */
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      cursor: grab;
-      user-select: none;
-      touch-action: none;
-      display: flex;
-      flex-direction: column;
-      transform-origin: 50% 100%;
-      transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
-    }
-
-    .swipe-card:active {
-      cursor: grabbing;
-    }
-
-    .swipe-card img {
-      width: 100%;
-      height: 85%;
-      object-fit: cover;
-      border-radius: 12px;
-      pointer-events: none;
-    }
-
-    .swipe-card-caption {
+    .gallery-loader {
+      grid-column: 1 / -1;
       text-align: center;
-      margin-top: auto;
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
+      padding: 120px 0;
       color: var(--text-muted);
-      font-size: 0.95rem;
+      font-weight: 300;
     }
 
-    .swipe-instruction {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 10px;
+    .spinner {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      border: 2px solid var(--border-color);
+      border-radius: 50%;
+      border-top-color: var(--red-accent);
+      animation: spin 1s ease-in-out infinite;
+      margin-bottom: 16px;
     }
 
     /* Letter Section */
     section.letter-section {
+      width: 100%;
       padding: 80px 0;
       background-color: var(--bg-dark);
       border-top: 1px solid var(--border-color);
@@ -615,6 +604,7 @@
 
     /* Celebration Button & Canvas */
     .wish-container {
+      width: 100%;
       text-align: center;
       padding: 60px 0 100px 0;
       background-color: var(--bg-dark);
@@ -658,6 +648,7 @@
 
     /* Footer */
     footer {
+      width: 100%;
       background-color: var(--card-bg);
       padding: 40px 24px;
       text-align: center;
@@ -711,24 +702,6 @@
     }
 
     @media (max-width: 768px) {
-      .timeline::after {
-        left: 31px;
-      }
-      .timeline-item {
-        width: 100%;
-        padding-left: 55px;
-        padding-right: 15px;
-      }
-      .timeline-item.right {
-        left: 0;
-      }
-      .timeline-item::after {
-        left: 25px;
-        right: auto;
-      }
-      .timeline-item.right::after {
-        left: 25px;
-      }
       .letter-card {
         padding: 40px 20px;
       }
@@ -775,57 +748,54 @@
     </div>
   </header>
 
-  <!-- Timeline Section -->
-  <section class="timeline-section" id="timeline-sec">
-    <div class="container">
-      <h2 class="section-title">The Story So Far</h2>
-      <p class="section-subtitle">Milestones we've passed</p>
-      
-      <div class="timeline">
-        <!-- Milestone 1 -->
-        <div class="timeline-item left">
-          <div class="timeline-content">
-            <div class="timeline-date">February 14</div>
-            <h3 class="timeline-title">The Spark</h3>
-            <p class="timeline-body">
-              The day our paths crossed on Valentine's Day. An unexpected, beautiful beginning that set our entire journey into motion.
-            </p>
-          </div>
-        </div>
-
-        <!-- Milestone 2 -->
-        <div class="timeline-item right">
-          <div class="timeline-content">
-            <div class="timeline-date">March 17</div>
-            <h3 class="timeline-title">Laying It All Out</h3>
-            <p class="timeline-body">
-              The night I laid my feelings on the table and we began our honest chapter. No walls, just true, open conversations about our pasts, our healing, and what we wanted our lives to look like.
-            </p>
-          </div>
-        </div>
-
-        <!-- Milestone 3 -->
-        <div class="timeline-item left">
-          <div class="timeline-content">
-            <div class="timeline-date">April 16</div>
-            <h3 class="timeline-title">Family Blessing</h3>
-            <p class="timeline-body">
-              Taking an essential step forward. I sat down and asked permission from your family, wanting to build our relationship on a firm foundation of respect, honor, and intention.
-            </p>
-          </div>
-        </div>
-
-        <!-- Milestone 4 -->
-        <div class="timeline-item right">
-          <div class="timeline-content">
-            <div class="timeline-date">Present & Beyond</div>
-            <h3 class="timeline-title">Celebrating You</h3>
-            <p class="timeline-body">
-              Your birthday—officially together and walking hand-in-hand. This is only the opening chapter of a beautiful lifetime of seasons under God's grace.
-            </p>
-          </div>
-        </div>
+  <!-- Swipeable Timeline Section -->
+  <section class="stack-section timeline-section" id="timeline-sec">
+    <h2 class="section-title">The Story So Far</h2>
+    <p class="section-subtitle">Swipe through our milestones</p>
+    
+    <div class="stack-container" id="timeline-stack">
+      <!-- Milestone 1 -->
+      <div class="swipe-card timeline-card">
+        <div class="timeline-date">February 14</div>
+        <h3 class="timeline-title serif-font">The Spark</h3>
+        <p class="timeline-body">
+          The day our paths crossed on Valentine's Day. An unexpected, beautiful beginning that set our entire journey into motion.
+        </p>
       </div>
+
+      <!-- Milestone 2 -->
+      <div class="swipe-card timeline-card">
+        <div class="timeline-date">March 17</div>
+        <h3 class="timeline-title serif-font">Laying It All Out</h3>
+        <p class="timeline-body">
+          The night I laid my feelings on the table and we began our honest chapter. No walls, just true, open conversations about our pasts, our healing, and what we wanted our lives to look like.
+        </p>
+      </div>
+
+      <!-- Milestone 3 -->
+      <div class="swipe-card timeline-card">
+        <div class="timeline-date">April 16</div>
+        <h3 class="timeline-title serif-font">Family Blessing</h3>
+        <p class="timeline-body">
+          Taking an essential step forward. I sat down and asked permission from your family, wanting to build our relationship on a firm foundation of respect, honor, and intention.
+        </p>
+      </div>
+
+      <!-- Milestone 4 -->
+      <div class="swipe-card timeline-card">
+        <div class="timeline-date">Present & Beyond</div>
+        <h3 class="timeline-title serif-font">Celebrating You</h3>
+        <p class="timeline-body">
+          Your birthday—officially together and walking hand-in-hand. This is only the opening chapter of a beautiful lifetime of seasons under God's grace.
+        </p>
+      </div>
+    </div>
+
+    <div class="swipe-instruction">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+      </svg>
+      Swipe left or right
     </div>
   </section>
 
@@ -845,7 +815,7 @@
 
         <!-- Custom Audio Player markup -->
         <div class="audio-player-container">
-          <audio id="love-audio" src="recording.mp3" preload="metadata"></audio>
+          <audio id="love-audio" src="recording_19.m4a" preload="metadata"></audio>
           <div class="player-controls">
             <button class="player-btn" id="play-btn" onclick="toggleAudio()">
               <!-- Play Icon -->
@@ -879,7 +849,7 @@
           </button>
           <div class="transcript-content" id="transcript-content">
             <p class="tagalog-text" style="margin-top: 16px;">
-              "Hey JM, this is your girlfriend. So now you can call me baby or baby. Ito na yung araw na pinag-pray ko sa Lord and yes, nag-answer na siya. Simula ng February 14 na nagkakilala tayo. March 17 na nagtapat ka ng nararamdaman sa akin. At April 16 nung nagpaalam ka talaga sa family ko, alam ko na genuine na yung love mo non sa akin. At akalain mo y'yun, unti-unti akong nafo-fall. Grateful ako kasi dumating ka... JM importante ka sa akin at ayoko ng mawala ka... mhal kita, mahal na kita. Oo na, tayo na. I love you, bab..."
+              "Hey JM, this is your girlfriend. So now you can call me baby or baby. Ito na yung araw na pinag-pray ko sa Lord and yes, nag-answer na siya. Simula ng February 14 na nagkakilala tayo. March 17 na nagtapat ka ng nararamdaman sa akin. At April 16 nung nagpaalam ka talaga sa family ko, alam ko na genuine na yung love mo non sa akin. At akalain mo y'yun, unti-unti akong nafo-fall. Grateful ako kasi dumating ka... JM importante ka sa akin at ayoko ng mawala ka... mhal kita, mahal na kita. Oo na, tayo na. I love you, babe..."
             </p>
           </div>
         </div>
@@ -889,25 +859,23 @@
   </section>
 
   <!-- Gallery Section: Swipable Polaroid Stack -->
-  <section class="gallery-section">
-    <div class="container" style="display: flex; flex-direction: column; align-items: center;">
-      <h2 class="section-title">Our Memory Lane</h2>
-      <p class="section-subtitle">Every captured second since February</p>
-      
-      <div class="gallery-stack-container" id="gallery-stack">
-        <!-- Swipable Cards will be injected dynamically here -->
-        <div class="gallery-loader" id="gallery-loader" style="margin-top: 150px;">
-          <div class="spinner"></div>
-          <p>Fetching memories from GitHub...</p>
-        </div>
+  <section class="stack-section gallery-section">
+    <h2 class="section-title">Our Memory Lane</h2>
+    <p class="section-subtitle">Every captured second since February</p>
+    
+    <div class="stack-container" id="gallery-stack">
+      <!-- Swipable Cards injected dynamically -->
+      <div class="gallery-loader" id="gallery-loader" style="margin-top: 150px;">
+        <div class="spinner"></div>
+        <p>Fetching memories from GitHub...</p>
       </div>
+    </div>
 
-      <div class="swipe-instruction">
-        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
-        </svg>
-        Swipe left or right
-      </div>
+    <div class="swipe-instruction">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+      </svg>
+      Swipe left or right
     </div>
   </section>
 
@@ -989,16 +957,117 @@
 
 
     /* =========================================================================
-       2. REPO CONFIGURATION (Update with your username and repo name!)
+       2. REPO CONFIGURATION (Change 'ArkmJohn' and 'for-cel' if your repo changes!)
        ========================================================================= */
     const GITHUB_CONFIG = {
-      username: 'ArkmJohn',         // Updated with your GitHub username
-      repo: 'for-cel',              // Updated with your Repository Name
-      folderPath: 'images'          // Folder holding your images
+      username: 'ArkmJohn',         
+      repo: 'for-cel',              
+      folderPath: 'images'          
     };
 
     /* =========================================================================
-       3. SWIPABLE POLAROID STACK LOGIC
+       3. REUSABLE GESTURAL STACK CONTROLLER (Tinder/Polaroid Swipe Physics)
+       ========================================================================= */
+    function initSwipeStack(containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      let isDragging = false;
+      let startX = 0;
+      let startY = 0;
+      let currentCard = null;
+
+      // Restructure scale & rotation layering relative to indices
+      function restack() {
+        const cards = Array.from(container.querySelectorAll('.swipe-card:not(.swiped)'));
+        cards.forEach((card, i) => {
+          const offset = i * 4;
+          const scale = 1 - (i * 0.04);
+          card.style.transition = 'transform 0.4s ease, opacity 0.4s ease';
+          card.style.transform = `scale(${scale}) translateY(${offset}px) rotate(${i % 2 === 0 ? 1 : -1}deg)`;
+          card.style.zIndex = cards.length - i;
+        });
+      }
+
+      // Initial card restacking setup
+      restack();
+
+      const startDrag = (e) => {
+        if (isDragging) return;
+        const cards = Array.from(container.querySelectorAll('.swipe-card:not(.swiped)'));
+        if (cards.length === 0) return;
+        currentCard = cards[0]; // Intercept topmost active card
+
+        isDragging = true;
+        currentCard.style.transition = 'none';
+
+        const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+        const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+        startX = clientX;
+        startY = clientY;
+      };
+
+      const dragMove = (e) => {
+        if (!isDragging || !currentCard) return;
+
+        const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+        const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+        
+        const deltaX = clientX - startX;
+        const deltaY = clientY - startY;
+        const rotation = deltaX / 10;
+
+        currentCard.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(${rotation}deg)`;
+      };
+
+      const stopDrag = (e) => {
+        if (!isDragging || !currentCard) return;
+        isDragging = false;
+
+        const endX = e.type.includes('touch') ? e.changedTouches[0].clientX : e.clientX;
+        const deltaX = endX - startX;
+        const threshold = 100; // px displacement threshold
+
+        currentCard.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease';
+
+        if (Math.abs(deltaX) > threshold) {
+          // Swipe complete
+          const swipeOutWidth = window.innerWidth + 200;
+          const direction = deltaX > 0 ? 1 : -1;
+          currentCard.style.transform = `translate(${direction * swipeOutWidth}px, 0px) rotate(${direction * 30}deg)`;
+          currentCard.style.opacity = '0';
+          currentCard.classList.add('swiped');
+
+          const cardToRecycle = currentCard;
+          setTimeout(() => {
+            cardToRecycle.style.transition = 'none';
+            cardToRecycle.style.opacity = '1';
+            cardToRecycle.classList.remove('swiped');
+            container.removeChild(cardToRecycle);
+            container.appendChild(cardToRecycle);
+            restack();
+          }, 500);
+
+        } else {
+          // Snap back to base stack
+          currentCard.style.transform = `scale(1) translateY(0px) rotate(0deg)`;
+          restack();
+        }
+        currentCard = null;
+      };
+
+      // Register drag event bounds
+      container.addEventListener('mousedown', startDrag);
+      document.addEventListener('mousemove', dragMove);
+      document.addEventListener('mouseup', stopDrag);
+
+      container.addEventListener('touchstart', startDrag, { passive: true });
+      document.addEventListener('touchmove', dragMove, { passive: false });
+      document.addEventListener('touchend', stopDrag);
+    }
+
+    /* =========================================================================
+       4. DYNAMIC GALLERY FETCH (Parses filename for label starts-with)
        ========================================================================= */
     async function fetchGitHubImages() {
       const loader = document.getElementById('gallery-loader');
@@ -1026,15 +1095,25 @@
 
         stackContainer.removeChild(loader);
 
-        // Render card stack (Reverse array so first image is on top)
-        imageFiles.reverse().forEach((file, index) => {
-          createSwipeCard(file.download_url, `Memory #${imageFiles.length - index}`);
+        // Render card stack in chronological order (Reverse array so first remains top)
+        imageFiles.reverse().forEach((file) => {
+          let parsedLabel = "";
+          
+          // Check if filename starts with "label-"
+          if (file.name.toLowerCase().startsWith("label-")) {
+            // Strip out "label-", file extension, replace dashes/underscores with space
+            const rawText = file.name.slice(6).split('.')[0];
+            const cleanedText = rawText.replace(/[-_]/g, ' ');
+            parsedLabel = cleanedText.charAt(0).toUpperCase() + cleanedText.slice(1);
+          }
+
+          createSwipeCard(file.download_url, parsedLabel);
         });
 
-        initSwipeGestures();
+        initSwipeStack('gallery-stack');
 
       } catch (error) {
-        console.warn('Fallback local render due to local preview or network limits.');
+        console.warn('Network issue or offline preview. Swapping to default fallback images.');
         renderLocalFallback();
       }
     }
@@ -1048,139 +1127,38 @@
         { url: 'images/feb_meeting.jpg', label: 'Where it all started' },
         { url: 'images/march_confession.jpg', label: 'Laying it all out' },
         { url: 'images/april_asking.jpg', label: 'Meeting the family' },
-        { url: 'images/birthday.jpg', label: 'Happy Birthday, Babe' }
+        { url: 'images/birthday.jpg', label: '' } // No label demo
       ];
 
       fallbackImages.reverse().forEach(img => {
         createSwipeCard(img.url, img.label);
       });
 
-      initSwipeGestures();
+      initSwipeStack('gallery-stack');
     }
 
     function createSwipeCard(imageUrl, caption) {
       const stackContainer = document.getElementById('gallery-stack');
       const card = document.createElement('div');
-      card.className = 'swipe-card';
       
-      card.innerHTML = `
-        <img src="${imageUrl}" alt="Memory with Cel" onerror="this.parentElement.style.display='none';">
-        <div class="swipe-card-caption">${caption}</div>
-      `;
+      // If caption exists, toggle layout sizing to compress image slightly
+      if (caption) {
+        card.className = 'swipe-card gallery-card has-caption';
+        card.innerHTML = `
+          <img src="${imageUrl}" alt="Memory with Cel" onerror="this.parentElement.style.display='none';">
+          <div class="swipe-card-caption">${caption}</div>
+        `;
+      } else {
+        card.className = 'swipe-card gallery-card';
+        card.innerHTML = `
+          <img src="${imageUrl}" alt="Memory with Cel" onerror="this.parentElement.style.display='none';">
+        `;
+      }
       stackContainer.appendChild(card);
     }
 
-    // Interactive custom Card Swiper engine
-    function initSwipeGestures() {
-      const cards = document.querySelectorAll('.swipe-card');
-      let startX = 0;
-      let startY = 0;
-      let isDragging = false;
-      let currentCard = null;
-
-      // Layer cards using slight scale/rotation offset for beautiful organic feel
-      cards.forEach((card, i) => {
-        const offset = i * 3;
-        const scale = 1 - (i * 0.04);
-        card.style.transform = `scale(${scale}) translateY(${offset}px) rotate(${i % 2 === 0 ? 1 : -1}deg)`;
-        card.style.zIndex = cards.length - i;
-      });
-
-      const startDrag = (e) => {
-        if (isDragging) return;
-        
-        // Target topmost visible card only
-        const activeCards = Array.from(document.querySelectorAll('.swipe-card')).filter(c => !c.classList.contains('swiped'));
-        if (activeCards.length === 0) return;
-        currentCard = activeCards[0];
-
-        isDragging = true;
-        currentCard.style.transition = 'none';
-
-        const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-        const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-        startX = clientX;
-        startY = clientY;
-      };
-
-      const dragMove = (e) => {
-        if (!isDragging || !currentCard) return;
-
-        const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
-        const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
-        
-        const deltaX = clientX - startX;
-        const deltaY = clientY - startY;
-
-        // Rotate card slightly based on horizontal distance
-        const rotation = deltaX / 10;
-        currentCard.style.transform = `translate(${deltaX}px, ${deltaY}px) rotate(${rotation}deg)`;
-      };
-
-      const stopDrag = (e) => {
-        if (!isDragging || !currentCard) return;
-        isDragging = false;
-
-        const endX = e.type.includes('touch') ? e.changedTouches[0].clientX : e.clientX;
-        const deltaX = endX - startX;
-        const threshold = 120; // px displacement needed to register swipe
-
-        currentCard.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
-
-        if (Math.abs(deltaX) > threshold) {
-          // Swipe card away
-          const swipeOutWidth = window.innerWidth + 200;
-          const direction = deltaX > 0 ? 1 : -1;
-          currentCard.style.transform = `translate(${direction * swipeOutWidth}px, 0px) rotate(${direction * 30}deg)`;
-          currentCard.style.opacity = '0';
-          currentCard.classList.add('swiped');
-
-          // Recycle card to bottom of stack to loop indefinitely
-          const cardToRecycle = currentCard;
-          setTimeout(() => {
-            cardToRecycle.style.transition = 'none';
-            cardToRecycle.style.opacity = '1';
-            cardToRecycle.classList.remove('swiped');
-            
-            const stackContainer = document.getElementById('gallery-stack');
-            stackContainer.removeChild(cardToRecycle);
-            stackContainer.appendChild(cardToRecycle);
-            
-            // Re-order restacking heights
-            restackCards();
-          }, 500);
-
-        } else {
-          // Snap back to base position
-          currentCard.style.transform = `scale(1) translateY(0px) rotate(0deg)`;
-        }
-        currentCard = null;
-      };
-
-      function restackCards() {
-        const remainingCards = Array.from(document.querySelectorAll('.swipe-card'));
-        remainingCards.forEach((card, i) => {
-          const offset = i * 3;
-          const scale = 1 - (i * 0.04);
-          card.style.transition = 'transform 0.4s ease';
-          card.style.transform = `scale(${scale}) translateY(${offset}px) rotate(${i % 2 === 0 ? 1 : -1}deg)`;
-          card.style.zIndex = remainingCards.length - i;
-        });
-      }
-
-      // Hook up event listeners to container
-      const container = document.getElementById('gallery-stack');
-      container.addEventListener('mousedown', startDrag);
-      document.addEventListener('mousemove', dragMove);
-      document.addEventListener('mouseup', stopDrag);
-
-      container.addEventListener('touchstart', startDrag, { passive: true });
-      document.addEventListener('touchmove', dragMove, { passive: false });
-      document.addEventListener('touchend', stopDrag);
-    }
-
     /* =========================================================================
-       4. CUSTOM AUDIO PLAYER INTERFACE LOGIC
+       5. CUSTOM AUDIO PLAYER INTERFACE LOGIC
        ========================================================================= */
     const audio = document.getElementById('love-audio');
     const playBtn = document.getElementById('play-btn');
@@ -1240,7 +1218,7 @@
     });
 
     /* =========================================================================
-       5. TRANSCRIPT ACCORDION TOGGLE
+       6. TRANSCRIPT ACCORDION TOGGLE
        ========================================================================= */
     function toggleTranscript() {
       const content = document.getElementById('transcript-content');
@@ -1255,7 +1233,7 @@
     }
 
     /* =========================================================================
-       6. INTERACTIVE CONFETTI & HEARTS SHOWER EFFECT (Canvas-based)
+       7. INTERACTIVE CONFETTI & HEARTS SHOWER EFFECT (Canvas-based)
        ========================================================================= */
     const canvas = document.getElementById('celebration-canvas');
     const ctx = canvas.getContext('2d');
@@ -1360,22 +1338,11 @@
     }
 
     /* =========================================================================
-       7. SCROLL ANIMATION TRIGGER FOR TIMELINE
+       8. INITIALIZER EVENT
        ========================================================================= */
-    function checkTimelineScroll() {
-      const items = document.querySelectorAll('.timeline-item');
-      items.forEach(item => {
-        const rect = item.getBoundingClientRect();
-        if (rect.top <= window.innerHeight * 0.85) {
-          item.classList.add('visible');
-        }
-      });
-    }
-
-    window.addEventListener('scroll', checkTimelineScroll);
     document.addEventListener('DOMContentLoaded', () => {
       fetchGitHubImages();
-      setTimeout(checkTimelineScroll, 200);
+      initSwipeStack('timeline-stack');
     });
   </script>
 </body>
