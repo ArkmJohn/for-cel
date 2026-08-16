@@ -565,7 +565,7 @@
     }
 
     .transcript-content.expanded {
-      max-height: 800px;
+      max-height: 250px;
     }
 
     .tagalog-text {
@@ -817,7 +817,7 @@
         <button class="gate-btn" onclick="verifyPassword()">Enter Site</button>
       </div>
       
-      <div id="gate-err" class="gate-error">Incorrect date. Hint: The day we became official.</div>
+      <div id="gate-err" class="gate-error">Incorrect date. Hint: The day we became official, or the day we met!</div>
     </div>
   </div>
 
@@ -904,7 +904,7 @@
   </section>
 
   <!-- Voice Note Section (The Recording) -->
-  <section class="voice-note-section">
+  <section class="voice-note-section" id="voice-note-sec">
     <div class="container">
       <div class="voice-card">
         <div class="voice-header">
@@ -1155,9 +1155,35 @@
       const errEl = document.getElementById('gate-err');
       const gateCard = document.querySelector('.gate-card');
       const gateOverlay = document.getElementById('password-gate');
-      const correctPin = '071726'; // July 17, 2026
+      
+      const enteredPin = pinField.value;
+      const officialPin = '071726'; // July 17, 2026 - Official Date (Full Site)
+      const meetingPin = '140226';  // February 14, 2026 - The Day We Met (No Voice Note)
 
-      if (pinField.value === correctPin) {
+      if (enteredPin === officialPin || enteredPin === meetingPin) {
+        // Dynamic Voice Note Toggle based on passcode entered
+        const voiceSection = document.getElementById('voice-note-sec');
+        if (voiceSection) {
+          if (enteredPin === meetingPin) {
+            voiceSection.style.display = 'none'; // Completely disable/hide for "The Day We Met" passcode
+            
+            // Switch "babe" and "Babe" to "Cel" dynamically
+            const walk = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+            let node;
+            while (node = walk.nextNode()) {
+              const parent = node.parentNode.nodeName;
+              if (parent !== 'SCRIPT' && parent !== 'STYLE' && parent !== 'INPUT' && parent !== 'TEXTAREA') {
+                let text = node.nodeValue;
+                text = text.replace(/\bBabe\b/g, 'Cel');
+                text = text.replace(/\bbabe\b/g, 'Cel');
+                node.nodeValue = text;
+              }
+            }
+          } else {
+            voiceSection.style.display = 'block'; // Make sure it's visible for the main passcode
+          }
+        }
+
         gateOverlay.classList.add('hidden');
         document.body.style.overflow = 'auto';
         
@@ -1577,4 +1603,4 @@
     });
   </script>
 </body>
-</html
+</html>
