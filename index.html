@@ -277,9 +277,10 @@
       width: 320px;
       height: 420px;
       margin: 20px auto 10px auto;
+      touch-action: pan-y; /* Allows vertical scrolling but isolates horizontal swipes */
     }
 
-    /* Simple Navigation Arrow Controls */
+    /* Navigation Arrow Controls */
     .card-controls {
       display: flex;
       align-items: center;
@@ -762,7 +763,7 @@
     </div>
   </header>
 
-  <!-- Timeline Cards Section (Simple Button Controlled) -->
+  <!-- Timeline Cards Section (Button & Swipe Controlled) -->
   <section class="stack-section timeline-section" id="timeline-sec">
     <h2 class="section-title">The Story So Far</h2>
     <p class="section-subtitle">Tribute to our milestones</p>
@@ -879,7 +880,7 @@
     </div>
   </section>
 
-  <!-- Gallery Section: Polaroid Stack (Simple Button Controlled) -->
+  <!-- Gallery Section: Polaroid Stack (Button & Swipe Controlled) -->
   <section class="stack-section gallery-section">
     <h2 class="section-title">Our Memory Lane</h2>
     <p class="section-subtitle">Every captured second since February</p>
@@ -994,7 +995,7 @@
     };
 
     /* =========================================================================
-       3. BULLETPROOF SLIDESHOW CONTROLLER (No GPU, No Complex Node Appending)
+       3. BULLETPROOF SLIDESHOW CONTROLLER & PASSIVE SWIPES
        ========================================================================= */
     function initSimpleStack(containerId) {
       const container = document.getElementById(containerId);
@@ -1002,6 +1003,7 @@
       
       container.dataset.activeIndex = "0";
       updateSimpleStack(containerId);
+      addPassiveSwipeSupport(containerId);
     }
 
     function updateSimpleStack(containerId) {
@@ -1013,16 +1015,15 @@
 
       let activeIndex = parseInt(container.dataset.activeIndex || "0", 10);
 
-      // Simple Wrap-around Index Rules
+      // Wrap-around Index logic
       if (activeIndex >= cards.length) activeIndex = 0;
       if (activeIndex < 0) activeIndex = cards.length - 1;
       container.dataset.activeIndex = activeIndex.toString();
 
-      // Show only active, hide everything else (absolutely no layout lag)
+      // Set visible card active, cleanly hide others
       cards.forEach((card, i) => {
         if (i === activeIndex) {
           card.style.display = 'flex';
-          // Small delay to ensure display: flex registers before opacity transition
           setTimeout(() => {
             card.style.opacity = '1';
           }, 10);
@@ -1041,6 +1042,37 @@
       activeIndex += direction;
       container.dataset.activeIndex = activeIndex.toString();
       updateSimpleStack(containerId);
+    }
+
+    // Zero-stress horizontal swipe tracker (No drag styles, zero rendering lag)
+    function addPassiveSwipeSupport(containerId) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+
+      let startX = 0;
+      let startY = 0;
+
+      container.addEventListener('touchstart', (e) => {
+        startX = e.touches.clientX;
+        startY = e.touches.clientY;
+      }, { passive: true });
+
+      container.addEventListener('touchend', (e) => {
+        const endX = e.changedTouches.clientX;
+        const endY = e.changedTouches.clientY;
+
+        const diffX = endX - startX;
+        const diffY = endY - startY;
+
+        // Ensure vertical scrolling is preserved while isolating swipes
+        if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 40) {
+          if (diffX > 0) {
+            cycleStackSimple(containerId, -1); // Swiped Right -> Prev
+          } else {
+            cycleStackSimple(containerId, 1);  // Swiped Left -> Next
+          }
+        }
+      }, { passive: true });
     }
 
     /* =========================================================================
@@ -1079,7 +1111,6 @@
           
           if (file.name.toLowerCase().startsWith("label-")) {
             const baseName = file.name.slice(6);
-            // Safely strip ext name to avoid string-parsing exceptions
             const nameWithoutExt = baseName.substring(0, baseName.lastIndexOf('.')) || baseName;
             const cleanedText = nameWithoutExt.replace(/[-_]/g, ' ');
             parsedLabel = cleanedText.charAt(0).toUpperCase() + cleanedText.slice(1);
