@@ -723,7 +723,7 @@
       width: 100vw;
       height: 100vh;
       pointer-events: none;
-      z-index: 9999;
+      z-index: 100010; /* Render above the wish lightbox (100005) */
     }
 
     /* Footer */
@@ -839,7 +839,7 @@
       <button onclick="closeWishLightbox()" style="position: absolute; top: 16px; right: 16px; background: none; border: none; color: var(--text-muted); font-size: 1.8rem; cursor: pointer; line-height: 1; outline: none; transition: color 0.3s;" onmouseover="this.style.color='var(--red-accent)'" onmouseout="this.style.color='var(--text-muted)'">&times;</button>
       <img src="special-image.jpg" alt="Our Special Memory" style="width: 100%; border-radius: 12px; max-height: 380px; object-fit: cover; border: 1px solid var(--border-color); margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
       <p class="serif-font" style="font-size: 1.35rem; color: var(--yellow-accent); margin-bottom: 10px; font-style: italic;">Philippians 1:3</p>
-      <p style="font-size: 1rem; color: var(--text-main); font-weight: 300; line-height: 1.7; font-style: italic;">"I thank my God every time I remember you"</p>
+      <p style="font-size: 1rem; color: var(--text-main); font-weight: 300; line-height: 1.7; font-style: italic;">"I thank my God in all my remembrance of you."</p>
     </div>
   </div>
 
