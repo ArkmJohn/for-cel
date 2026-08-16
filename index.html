@@ -796,15 +796,27 @@
   <!-- Password Entry Gate Overlay -->
   <div id="password-gate">
     <div class="gate-card">
-      <p class="gate-subtitle">Private Archive</p>
-      <h2 class="gate-title serif-font">Our Special Date</h2>
-      <p class="gate-subtitle" style="font-size: 0.75rem; color: var(--red-accent); margin-bottom: 24px;">Enter passcode (MMDDYY) to unlock</p>
+      <p class="gate-subtitle" style="cursor: default;">Private Archive</p>
+      <h2 class="gate-title serif-font" id="gate-title-click" style="cursor: pointer; user-select: none;">Our Special Date</h2>
       
-      <div class="gate-input-wrapper">
-        <input type="password" id="gate-pin" class="gate-input" maxlength="6" placeholder="******" autocomplete="off" autofocus>
+      <!-- Dynamic Countdown Section (Displays if locked before target date) -->
+      <div id="countdown-wrapper" style="margin: 20px 0; display: none;">
+        <p class="gate-subtitle" style="font-size: 0.75rem; color: var(--red-accent); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">Unlocking in...</p>
+        <div id="countdown-timer" style="font-size: 1.8rem; font-family: 'Playfair Display', serif; font-weight: 600; color: var(--yellow-accent); letter-spacing: 1.5px; margin: 12px 0;">00:00:00</div>
+        <p class="gate-subtitle" style="font-size: 0.65rem; color: var(--text-muted); margin-top: 8px; letter-spacing: 1px;">Please check back at midnight!</p>
+      </div>
+
+      <!-- Passcode Entry Section (Hidden until unlocked or bypassed) -->
+      <div id="passcode-wrapper">
+        <p class="gate-subtitle" style="font-size: 0.75rem; color: var(--red-accent); margin-bottom: 24px;">Enter passcode (MMDDYY) to unlock</p>
+        
+        <div class="gate-input-wrapper">
+          <input type="password" id="gate-pin" class="gate-input" maxlength="6" placeholder="******" autocomplete="off" autofocus>
+        </div>
+        
+        <button class="gate-btn" onclick="verifyPassword()">Enter Site</button>
       </div>
       
-      <button class="gate-btn" onclick="verifyPassword()">Enter Site</button>
       <div id="gate-err" class="gate-error">Incorrect date. Hint: The day we became official.</div>
     </div>
   </div>
@@ -1045,8 +1057,91 @@
   <!-- Scripts -->
   <script>
     /* =========================================================================
-       1. PASSCODE GATE VALIDATION
+       1. PASSCODE GATE & DETAILED COUNTDOWN SYSTEM
        ========================================================================= */
+    const targetDate = new Date("2026-08-17T00:00:00+08:00"); // Aug 17, 2026 00:00:00 GMT+08:00 (Philippine Time)
+    let countdownInterval = null;
+    let isBypassed = false;
+
+    function initCountdown() {
+      const countdownWrapper = document.getElementById('countdown-wrapper');
+      const passcodeWrapper = document.getElementById('passcode-wrapper');
+      const timerEl = document.getElementById('countdown-timer');
+
+      function updateTimer() {
+        if (isBypassed) return;
+
+        const now = new Date();
+        const diff = targetDate - now;
+
+        if (diff <= 0) {
+          // Locked time exceeded: show passcode entry
+          clearInterval(countdownInterval);
+          if (countdownWrapper) countdownWrapper.style.display = 'none';
+          if (passcodeWrapper) {
+            passcodeWrapper.style.display = 'block';
+            const pinField = document.getElementById('gate-pin');
+            if (pinField) pinField.focus();
+          }
+        } else {
+          // Locked time active: show countdown timer, hide entry
+          if (countdownWrapper) countdownWrapper.style.display = 'block';
+          if (passcodeWrapper) passcodeWrapper.style.display = 'none';
+
+          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+          const minutes = Math.floor((diff / 1000 / 60) % 60);
+          const seconds = Math.floor((diff / 1000) % 60);
+
+          let displayStr = "";
+          if (days > 0) {
+            displayStr += `${days}d : `;
+          }
+          displayStr += `${hours.toString().padStart(2, '0')}h : ${minutes.toString().padStart(2, '0')}m : ${seconds.toString().padStart(2, '0')}s`;
+          if (timerEl) timerEl.textContent = displayStr;
+        }
+      }
+
+      updateTimer();
+      countdownInterval = setInterval(updateTimer, 1000);
+
+      // Secret developer bypass early (Tap the main Title "Our Special Date" 5 times)
+      let taps = 0;
+      const gateTitle = document.getElementById('gate-title-click');
+      if (gateTitle) {
+        gateTitle.addEventListener('click', () => {
+          taps++;
+          if (taps >= 5) {
+            bypassCountdownEarly();
+          }
+        });
+      }
+    }
+
+    function bypassCountdownEarly() {
+      isBypassed = true;
+      clearInterval(countdownInterval);
+      
+      const countdownWrapper = document.getElementById('countdown-wrapper');
+      const passcodeWrapper = document.getElementById('passcode-wrapper');
+      
+      if (countdownWrapper) countdownWrapper.style.display = 'none';
+      if (passcodeWrapper) {
+        passcodeWrapper.style.display = 'block';
+        passcodeWrapper.style.opacity = '0';
+        setTimeout(() => {
+          passcodeWrapper.style.transition = 'opacity 0.6s ease';
+          passcodeWrapper.style.opacity = '1';
+        }, 50);
+      }
+      
+      const pinField = document.getElementById('gate-pin');
+      if (pinField) {
+        pinField.value = '';
+        pinField.focus();
+      }
+    }
+
     function verifyPassword() {
       const pinField = document.getElementById('gate-pin');
       const errEl = document.getElementById('gate-err');
@@ -1470,6 +1565,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       fetchGitHubImages();
       initSimpleStack('timeline-stack');
+      initCountdown(); // Start locked birthday countdown check
     });
   </script>
 </body>
