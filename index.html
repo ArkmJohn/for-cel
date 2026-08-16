@@ -21,7 +21,6 @@
       --red-accent: #df4b61;        /* Romantic crimson red (dominant highlight) */
       --red-hover: #b53248;
       --border-color: #2b2223;      /* Subtle dark rose-tinted border */
-      --transition-speed: 0.4s;
     }
 
     * {
@@ -277,12 +276,45 @@
       position: relative;
       width: 320px;
       height: 420px;
-      margin: 20px auto;
+      margin: 20px auto 10px auto;
       perspective: 1000px;
-      touch-action: pan-y; /* Keeps dynamic vertical layout scrolling functional */
     }
 
-    /* GPU-Accelerated Swipe Card Base */
+    /* Arrow Controls Area */
+    .card-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      margin-top: 20px;
+    }
+
+    .nav-arrow-btn {
+      background-color: var(--bg-dark);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+    }
+
+    .nav-arrow-btn:hover {
+      border-color: var(--red-accent);
+      color: var(--red-accent);
+      transform: scale(1.05);
+    }
+
+    .nav-arrow-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* GPU-Accelerated Base Stack Cards */
     .swipe-card {
       position: absolute;
       width: 100%;
@@ -291,21 +323,14 @@
       border: 1px solid var(--border-color);
       border-radius: 20px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      cursor: grab;
-      user-select: none;
-      touch-action: none; /* Stops gesture clashing on dragging */
       display: flex;
       flex-direction: column;
       transform-origin: 50% 100%;
       will-change: transform, opacity; /* Informs browser to composite on GPU */
-      backface-visibility: hidden;    /* Removes flicker on Safari */
+      backface-visibility: hidden;    
       -webkit-backface-visibility: hidden;
       transform: translate3d(0, 0, 0);
       transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease;
-    }
-
-    .swipe-card:active {
-      cursor: grabbing;
     }
 
     /* Polaroid Gallery Card Specifics */
@@ -375,17 +400,6 @@
       color: var(--text-muted);
       font-weight: 300;
       line-height: 1.7;
-    }
-
-    .swipe-instruction {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 2px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 15px;
     }
 
     /* Voice Note Section */
@@ -753,10 +767,10 @@
     </div>
   </header>
 
-  <!-- Swipeable Timeline Section -->
+  <!-- Timeline Cards Section (Arrow Controlled) -->
   <section class="stack-section timeline-section" id="timeline-sec">
     <h2 class="section-title">The Story So Far</h2>
-    <p class="section-subtitle">Swipe through our milestones</p>
+    <p class="section-subtitle">Tribute to our milestones</p>
     
     <div class="stack-container" id="timeline-stack">
       <!-- Milestone 1 -->
@@ -796,11 +810,18 @@
       </div>
     </div>
 
-    <div class="swipe-instruction">
-      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
-      </svg>
-      Swipe left or right
+    <!-- Timeline Deck Controls -->
+    <div class="card-controls">
+      <button class="nav-arrow-btn" onclick="cycleStack('timeline-stack', -1)" aria-label="Previous card">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+        </svg>
+      </button>
+      <button class="nav-arrow-btn" onclick="cycleStack('timeline-stack', 1)" aria-label="Next card">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+        </svg>
+      </button>
     </div>
   </section>
 
@@ -820,7 +841,7 @@
 
         <!-- Custom Audio Player markup -->
         <div class="audio-player-container">
-          <!-- Audio source correctly set back to audio/recording_19.m4a -->
+          <!-- Grounded path inside the audio/ folder -->
           <audio id="love-audio" src="audio/recording_19.m4a" preload="metadata"></audio>
           <div class="player-controls">
             <button class="player-btn" id="play-btn" onclick="toggleAudio()">
@@ -864,24 +885,31 @@
     </div>
   </section>
 
-  <!-- Gallery Section: Swipable Polaroid Stack -->
+  <!-- Gallery Section: Polaroid Stack (Arrow Controlled) -->
   <section class="stack-section gallery-section">
     <h2 class="section-title">Our Memory Lane</h2>
     <p class="section-subtitle">Every captured second since February</p>
     
     <div class="stack-container" id="gallery-stack">
-      <!-- Swipable Cards injected dynamically -->
+      <!-- Cards injected dynamically -->
       <div class="gallery-loader" id="gallery-loader" style="margin-top: 150px;">
         <div class="spinner"></div>
         <p>Fetching memories from GitHub...</p>
       </div>
     </div>
 
-    <div class="swipe-instruction">
-      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
-      </svg>
-      Swipe left or right
+    <!-- Gallery Deck Controls -->
+    <div class="card-controls" id="gallery-controls-wrapper" style="display: none;">
+      <button class="nav-arrow-btn" onclick="cycleStack('gallery-stack', -1)" aria-label="Previous image">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+        </svg>
+      </button>
+      <button class="nav-arrow-btn" onclick="cycleStack('gallery-stack', 1)" aria-label="Next image">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+        </svg>
+      </button>
     </div>
   </section>
 
@@ -972,111 +1000,52 @@
     };
 
     /* =========================================================================
-       3. HIGH-PERFORMANCE GPU GESTURAL STACK CONTROLLER (Fixed Card Target Bug)
+       3. BULLETPROOF CARD STACK DECK RENDERING ENGINE (Button Cycle)
        ========================================================================= */
-    function initSwipeStack(containerId) {
+    function renderCardStack(containerId) {
       const container = document.getElementById(containerId);
       if (!container) return;
 
-      let isDragging = false;
-      let startX = 0;
-      let startY = 0;
-      let currentCard = null;
-      let rafId = null; 
+      const cards = Array.from(container.querySelectorAll('.swipe-card'));
+      cards.forEach((card, i) => {
+        const offset = i * 4;
+        const scale = 1 - (i * 0.04);
+        card.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease';
+        card.style.transform = `translate3d(0, ${offset}px, 0) scale(${scale}) rotate(${i % 2 === 0 ? 1 : -1}deg)`;
+        card.style.zIndex = cards.length - i;
+        card.style.opacity = '1';
+      });
+    }
 
-      function restack() {
-        const cards = Array.from(container.querySelectorAll('.swipe-card:not(.swiped)'));
-        cards.forEach((card, i) => {
-          const offset = i * 4;
-          const scale = 1 - (i * 0.04);
-          card.style.transition = 'transform 0.4s ease, opacity 0.4s ease';
-          // Force layers straight into composite stage on GPU
-          card.style.transform = `translate3d(0, ${offset}px, 0) scale(${scale}) rotate(${i % 2 === 0 ? 1 : -1}deg)`;
-          card.style.zIndex = cards.length - i;
-        });
-      }
+    // Cycles topmost cards using beautiful GPU animations triggered by click
+    function cycleStack(containerId, direction) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
 
-      restack();
+      const cards = Array.from(container.querySelectorAll('.swipe-card'));
+      if (cards.length <= 1) return;
 
-      const startDrag = (e) => {
-        if (isDragging) return;
-        const cards = Array.from(container.querySelectorAll('.swipe-card:not(.swiped)'));
-        if (cards.length === 0) return;
+      const activeCard = cards; // Grab the top card
+      
+      // Determine swipe out offset physics (Left or Right)
+      const offsetWidth = window.innerWidth + 200;
+      const targetX = direction * offsetWidth;
+      const targetRotation = direction * 30;
+
+      // Stage 1: Slide card smoothly out of view
+      activeCard.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease';
+      activeCard.style.transform = `translate3d(${targetX}px, 0, 0) rotate(${targetRotation}deg)`;
+      activeCard.style.opacity = '0';
+
+      // Stage 2: Recycle card behind stack container and layer heights
+      setTimeout(() => {
+        activeCard.style.transition = 'none'; // Temporarily kill transitioning
+        container.removeChild(activeCard);
+        container.appendChild(activeCard); // Append back to bottom
         
-        // Grab exactly the topmost active card element
-        currentCard = cards; 
-
-        isDragging = true;
-        currentCard.style.transition = 'none';
-
-        const clientX = e.type.includes('touch') ? e.touches.clientX : e.clientX;
-        const clientY = e.type.includes('touch') ? e.touches.clientY : e.clientY;
-        startX = clientX;
-        startY = clientY;
-      };
-
-      const dragMove = (e) => {
-        if (!isDragging || !currentCard) return;
-
-        // Block elastic bounce scrolling specifically during cards dragging
-        if (e.cancelable) e.preventDefault();
-
-        const clientX = e.type.includes('touch') ? e.touches.clientX : e.clientX;
-        const clientY = e.type.includes('touch') ? e.touches.clientY : e.clientY;
-        
-        const deltaX = clientX - startX;
-        const deltaY = clientY - startY;
-
-        // Throttles rendering tasks to align natively with 60hz / 120hz panels
-        if (rafId) cancelAnimationFrame(rafId);
-        rafId = requestAnimationFrame(() => {
-          const rotation = deltaX / 12;
-          currentCard.style.transform = `translate3d(${deltaX}px, ${deltaY}px, 0) rotate(${rotation}deg)`;
-        });
-      };
-
-      const stopDrag = (e) => {
-        if (!isDragging || !currentCard) return;
-        isDragging = false;
-        if (rafId) cancelAnimationFrame(rafId);
-
-        const endX = e.type.includes('touch') ? e.changedTouches.clientX : e.clientX;
-        const deltaX = endX - startX;
-        const threshold = 100; 
-
-        currentCard.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.5s ease';
-
-        if (Math.abs(deltaX) > threshold) {
-          const swipeOutWidth = window.innerWidth + 200;
-          const direction = deltaX > 0 ? 1 : -1;
-          currentCard.style.transform = `translate3d(${direction * swipeOutWidth}px, 0px, 0) rotate(${direction * 30}deg)`;
-          currentCard.style.opacity = '0';
-          currentCard.classList.add('swiped');
-
-          const cardToRecycle = currentCard;
-          setTimeout(() => {
-            cardToRecycle.style.transition = 'none';
-            cardToRecycle.style.opacity = '1';
-            cardToRecycle.classList.remove('swiped');
-            container.removeChild(cardToRecycle);
-            container.appendChild(cardToRecycle);
-            restack();
-          }, 500);
-
-        } else {
-          currentCard.style.transform = `translate3d(0, 0, 0) scale(1) rotate(0deg)`;
-          restack();
-        }
-        currentCard = null;
-      };
-
-      container.addEventListener('mousedown', startDrag);
-      document.addEventListener('mousemove', dragMove);
-      document.addEventListener('mouseup', stopDrag);
-
-      container.addEventListener('touchstart', startDrag, { passive: true });
-      document.addEventListener('touchmove', dragMove, { passive: false });
-      document.addEventListener('touchend', stopDrag);
+        // Re-render restacking layered frames
+        renderCardStack(containerId);
+      }, 450);
     }
 
     /* =========================================================================
@@ -1085,6 +1054,7 @@
     async function fetchGitHubImages() {
       const loader = document.getElementById('gallery-loader');
       const stackContainer = document.getElementById('gallery-stack');
+      const controlsWrapper = document.getElementById('gallery-controls-wrapper');
       
       if (GITHUB_CONFIG.username === 'YOUR_GITHUB_USERNAME' || GITHUB_CONFIG.username === '') {
         renderLocalFallback();
@@ -1121,7 +1091,10 @@
           createSwipeCard(file.download_url, parsedLabel);
         });
 
-        initSwipeStack('gallery-stack');
+        renderCardStack('gallery-stack');
+        if (imageFiles.length > 1) {
+          controlsWrapper.style.display = 'flex'; // Expose arrows
+        }
 
       } catch (error) {
         console.warn('Network issue or offline preview. Swapping to default fallback images.');
@@ -1132,6 +1105,7 @@
     function renderLocalFallback() {
       const loader = document.getElementById('gallery-loader');
       const stackContainer = document.getElementById('gallery-stack');
+      const controlsWrapper = document.getElementById('gallery-controls-wrapper');
       if (loader) stackContainer.removeChild(loader);
 
       const fallbackImages = [
@@ -1145,7 +1119,8 @@
         createSwipeCard(img.url, img.label);
       });
 
-      initSwipeStack('gallery-stack');
+      renderCardStack('gallery-stack');
+      controlsWrapper.style.display = 'flex'; // Expose arrows
     }
 
     function createSwipeCard(imageUrl, caption) {
@@ -1352,7 +1327,7 @@
        ========================================================================= */
     document.addEventListener('DOMContentLoaded', () => {
       fetchGitHubImages();
-      initSwipeStack('timeline-stack');
+      renderCardStack('timeline-stack');
     });
   </script>
 </body>
