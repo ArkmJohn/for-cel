@@ -565,7 +565,7 @@
     }
 
     .transcript-content.expanded {
-      max-height: 800px;
+      max-height: 250px;
     }
 
     .tagalog-text {
@@ -783,7 +783,7 @@
 
     @media (max-width: 768px) {
       .letter-card {
-        padding: 45px 25px;
+        padding: 40px 20px;
       }
       .voice-card {
         padding: 30px 16px;
@@ -1105,10 +1105,12 @@
       updateTimer();
       countdownInterval = setInterval(updateTimer, 1000);
 
-      // Secret developer bypass early (Tap the main Title "Our Special Date" 5 times)
+      // Secret developer bypass early (Tap the main Title "Our Special Date" 5 times) - ONLY ENABLED ON DESKTOP
       let taps = 0;
       const gateTitle = document.getElementById('gate-title-click');
-      if (gateTitle) {
+      const isDesktop = window.innerWidth >= 1024; // Ensure bypass can never be triggered on mobile screens
+      
+      if (gateTitle && isDesktop) {
         gateTitle.addEventListener('click', () => {
           taps++;
           if (taps >= 5) {
