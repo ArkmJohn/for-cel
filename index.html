@@ -782,7 +782,7 @@
     }
 
     @media (min-width: 1024px) {
-      #gallery-stack.stack-container {
+      .gallery-section .stack-container {
         width: 520px;
         height: 680px;
         margin: 40px auto 30px auto;
@@ -805,14 +805,9 @@
   <div id="password-gate">
     <div class="gate-card">
       <p class="gate-subtitle" style="cursor: default;">Private Archive</p>
-      <h2 class="gate-title serif-font" id="gate-title-click" style="cursor: pointer; user-select: none;">Preparing something beautiful</h2>
+      <h2 class="gate-title serif-font" id="gate-title-click" style="cursor: default; user-select: none;">Our Special Date</h2>
       
-      <!-- Dynamic Countdown Section (Displays if locked before target date) -->
-      <div id="countdown-wrapper" style="margin: 20px 0; display: none;">
-        <p class="gate-subtitle" style="font-size: 0.75rem; color: var(--red-accent); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;">Unlocking in...</p>
-        <div id="countdown-timer" style="font-size: 1.8rem; font-family: 'Playfair Display', serif; font-weight: 600; color: var(--yellow-accent); letter-spacing: 1.5px; margin: 12px 0;">00:00:00</div>
-        <p class="gate-subtitle" style="font-size: 0.65rem; color: var(--text-muted); margin-top: 8px; letter-spacing: 1px;">Please check back at midnight!</p>
-      </div>
+
 
       <!-- Passcode Entry Section (Hidden until unlocked or bypassed) -->
       <div id="passcode-wrapper">
@@ -837,7 +832,7 @@
     <div style="background-color: var(--card-bg); border: 1px solid var(--border-color); padding: 30px; border-radius: 20px; max-width: 90%; width: 420px; text-align: center; position: relative; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6); transform: scale(0.9); transition: transform 0.5s ease;" id="lightbox-content">
       <!-- Close Button -->
       <button onclick="closeWishLightbox()" style="position: absolute; top: 16px; right: 16px; background: none; border: none; color: var(--text-muted); font-size: 1.8rem; cursor: pointer; line-height: 1; outline: none; transition: color 0.3s;" onmouseover="this.style.color='var(--red-accent)'" onmouseout="this.style.color='var(--text-muted)'">&times;</button>
-      <img src="special-image.jpg" alt="Our Special Memory" style="width: 100%; border-radius: 12px; max-height: 380px; object-fit: cover; border: 1px solid var(--border-color); margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+      <img src="specail-image.png" alt="Our Special Memory" style="width: 100%; border-radius: 12px; max-height: 380px; object-fit: cover; border: 1px solid var(--border-color); margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
       <p class="serif-font" style="font-size: 1.35rem; color: var(--yellow-accent); margin-bottom: 10px; font-style: italic;">Philippians 1:3</p>
       <p style="font-size: 1rem; color: var(--text-main); font-weight: 300; line-height: 1.7; font-style: italic;">"I thank my God in all my remembrance of you."</p>
     </div>
@@ -981,52 +976,79 @@
     </div>
   </section>
 
-  <!-- Gallery Section: Polaroid Stack (Button & Swipe Controlled) -->
-  <section class="stack-section gallery-section">
-    <h2 class="section-title">Our Memory Lane</h2>
-    <p class="section-subtitle">Every (the good ones) captured second since February</p>
-    
-    <div class="stack-container" id="gallery-stack">
-      <!-- Cards injected dynamically -->
-      <div class="gallery-loader" id="gallery-loader" style="margin-top: 150px;">
+    <!-- Galleries Container -->
+  <div id="galleries-container">
+    <!-- Gallery Section: Polaroid Stack (Button & Swipe Controlled) -->
+    <section class="stack-section gallery-section" id="root-gallery-section" style="display: none;">
+      <h2 class="section-title" id="root-gallery-title">Our Memory Lane</h2>
+      <p class="section-subtitle" id="root-gallery-subtitle">Every (the good ones) captured second since February</p>
+      
+      <div class="stack-container" id="gallery-stack">
+        <!-- Cards injected dynamically -->
+      </div>
+
+      <!-- Gallery Deck Controls -->
+      <div class="card-controls" id="gallery-controls-wrapper" style="display: none;">
+        <button class="nav-arrow-btn" onclick="cycleStackSimple('gallery-stack', -1)" aria-label="Previous image">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+          </svg>
+        </button>
+        <button class="nav-arrow-btn" onclick="cycleStackSimple('gallery-stack', 1)" aria-label="Next image">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+          </svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Initial Loader -->
+    <section class="stack-section gallery-section" id="gallery-loader-section">
+      <div class="gallery-loader" id="gallery-loader">
         <div class="spinner"></div>
         <p>Fetching memories from GitHub...</p>
       </div>
-    </div>
-
-    <!-- Gallery Deck Controls -->
-    <div class="card-controls" id="gallery-controls-wrapper" style="display: none;">
-      <button class="nav-arrow-btn" onclick="cycleStackSimple('gallery-stack', -1)" aria-label="Previous image">
-        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-        </svg>
-      </button>
-      <button class="nav-arrow-btn" onclick="cycleStackSimple('gallery-stack', 1)" aria-label="Next image">
-        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-        </svg>
-      </button>
-    </div>
-  </section>
+    </section>
+  </div>
 
   <!-- Letter Section -->
   <section class="letter-section">
     <div class="container">
-      <div class="letter-card">
-        <h3 class="letter-salutation">My Dearest Cel,</h3>
-        <div class="letter-body">
-          <p>
-            Happy Birthday, babe! Looking back at our journey since February, I am constantly filled with gratitude for how God brought us together. The honest conversations we shared right from March laid down a foundation of trust that has only grown stronger with every passing week.
-          </p>
-          <p>
-            You once mentioned that you had never met someone who constantly reminded you of your true value. I want to promise you today, babe, that showing you your worth is something I will never stop doing. You carry such a beautiful, quiet strength and grace, and seeing your heart light up brings me more joy than words can capture.
-          </p>
-          <p>
-            I look forward to walking hand-in-hand with you through every season ahead, cherishing every single milestone, and building a lifetime of happy, purposeful tomorrows together under His grace. 
-          </p>
-        </div>
-        <div class="letter-signature">
-          With all my love, always.
+      <h2 class="section-title">Celebrating 26th Birthday of Cel</h2>
+      <p class="section-subtitle" style="margin-bottom: 32px;">A special note for your special day</p>
+
+      <!-- Birthday Image above the accordion -->
+      <div style="margin-bottom: 30px; text-align: center; max-width: 500px; width: 100%;">
+        <img src="Cel-26.jpg" alt="Celebrating 26th Birthday of Cel" style="width: 100%; height: auto; border-radius: 20px; border: 1px solid var(--border-color); box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+      </div>
+
+      <!-- Accordion for the birthday greeting -->
+      <div style="width: 100%; max-width: 700px; margin: 0 auto;">
+        <button class="transcript-toggle-btn" onclick="toggleLetter()" style="font-family: 'Montserrat', sans-serif; font-size: 0.9rem; color: var(--yellow-accent); cursor: pointer; font-weight: 600; display: flex; align-items: center; justify-content: center; margin: 0 auto; text-transform: uppercase; letter-spacing: 1px; background: none; border: none; outline: none; padding: 10px 20px;">
+          Read My Birthday Letter 
+          <svg id="letter-arrow" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" style="margin-left: 8px; transition: transform 0.3s;">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+          </svg>
+        </button>
+        
+        <div class="letter-content" id="letter-content" style="max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.16, 1, 0.3, 1); margin-top: 20px;">
+          <div class="letter-card" style="margin-top: 0; padding: 50px 30px;">
+            <h3 class="letter-salutation">My Dearest Cel,</h3>
+            <div class="letter-body">
+              <p>
+                Happy Birthday, babe! Looking back at our journey since February, I am constantly filled with gratitude for how God brought us together. The honest conversations we shared right from March laid down a foundation of trust that has only grown stronger with every passing week.
+              </p>
+              <p>
+                You once mentioned that you had never met someone who constantly reminded you of your true value. I want to promise you today, babe, that showing you your worth is something I will never stop doing. You carry such a beautiful, quiet strength and grace, and seeing your heart light up brings me more joy than words can capture.
+              </p>
+              <p>
+                I look forward to walking hand-in-hand with you through every season ahead, cherishing every single milestone, and building a lifetime of happy, purposeful tomorrows together under His grace. 
+              </p>
+            </div>
+            <div class="letter-signature">
+              With all my love, always.
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1078,96 +1100,7 @@
     /* =========================================================================
        1. PASSCODE GATE & DETAILED COUNTDOWN SYSTEM
        ========================================================================= */
-    const targetDate = new Date("2026-08-17T00:00:00+08:00"); // Aug 17, 2026 00:00:00 GMT+08:00 (Philippine Time)
-    let countdownInterval = null;
-    let isBypassed = false;
 
-    function initCountdown() {
-      const countdownWrapper = document.getElementById('countdown-wrapper');
-      const passcodeWrapper = document.getElementById('passcode-wrapper');
-      const timerEl = document.getElementById('countdown-timer');
-
-      function updateTimer() {
-        if (isBypassed) return;
-
-        const now = new Date();
-        const diff = targetDate - now;
-        const gateTitle = document.getElementById('gate-title-click');
-
-        if (diff <= 0) {
-          // Locked time exceeded: show passcode entry
-          clearInterval(countdownInterval);
-          if (gateTitle) gateTitle.textContent = "Our Special Date";
-          if (countdownWrapper) countdownWrapper.style.display = 'none';
-          if (passcodeWrapper) {
-            passcodeWrapper.style.display = 'block';
-            const pinField = document.getElementById('gate-pin');
-            if (pinField) pinField.focus();
-          }
-        } else {
-          // Locked time active: show countdown timer, hide entry
-          if (gateTitle) gateTitle.textContent = "Preparing something beautiful";
-          if (countdownWrapper) countdownWrapper.style.display = 'block';
-          if (passcodeWrapper) passcodeWrapper.style.display = 'none';
-
-          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-          const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-          const minutes = Math.floor((diff / 1000 / 60) % 60);
-          const seconds = Math.floor((diff / 1000) % 60);
-
-          let displayStr = "";
-          if (days > 0) {
-            displayStr += `${days}d : `;
-          }
-          displayStr += `${hours.toString().padStart(2, '0')}h : ${minutes.toString().padStart(2, '0')}m : ${seconds.toString().padStart(2, '0')}s`;
-          if (timerEl) timerEl.textContent = displayStr;
-        }
-      }
-
-      updateTimer();
-      countdownInterval = setInterval(updateTimer, 1000);
-
-      // Secret developer bypass early (Tap the main Title "Our Special Date" 5 times) - ONLY ENABLED ON DESKTOP
-      let taps = 0;
-      const gateTitle = document.getElementById('gate-title-click');
-      const isDesktop = window.innerWidth >= 1024; // Ensure bypass can never be triggered on mobile screens
-      
-      if (gateTitle && isDesktop) {
-        gateTitle.addEventListener('click', () => {
-          taps++;
-          if (taps >= 5) {
-            bypassCountdownEarly();
-          }
-        });
-      }
-    }
-
-    function bypassCountdownEarly() {
-      isBypassed = true;
-      clearInterval(countdownInterval);
-      
-      const gateTitle = document.getElementById('gate-title-click');
-      if (gateTitle) gateTitle.textContent = "Our Special Date";
-      
-      const countdownWrapper = document.getElementById('countdown-wrapper');
-      const passcodeWrapper = document.getElementById('passcode-wrapper');
-      
-      if (countdownWrapper) countdownWrapper.style.display = 'none';
-      if (passcodeWrapper) {
-        passcodeWrapper.style.display = 'block';
-        passcodeWrapper.style.opacity = '0';
-        setTimeout(() => {
-          passcodeWrapper.style.transition = 'opacity 0.6s ease';
-          passcodeWrapper.style.opacity = '1';
-        }, 50);
-      }
-      
-      const pinField = document.getElementById('gate-pin');
-      if (pinField) {
-        pinField.value = '';
-        pinField.focus();
-      }
-    }
 
     function verifyPassword() {
       const pinField = document.getElementById('gate-pin');
@@ -1333,10 +1266,14 @@
       }
     }
 
+    function cleanFolderName(name) {
+      let cleaned = name.replace(/[-_]/g, ' ');
+      return cleaned.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    }
+
     async function fetchGitHubImages() {
-      const loader = document.getElementById('gallery-loader');
-      const stackContainer = document.getElementById('gallery-stack');
-      const controlsWrapper = document.getElementById('gallery-controls-wrapper');
+      const parentContainer = document.getElementById('galleries-container');
+      const loaderSection = document.getElementById('gallery-loader-section');
       
       if (GITHUB_CONFIG.username === 'YOUR_GITHUB_USERNAME' || GITHUB_CONFIG.username === '') {
         renderLocalFallback();
@@ -1347,67 +1284,194 @@
         const response = await fetch(`https://api.github.com/repos/${GITHUB_CONFIG.username}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.folderPath}`);
         if (!response.ok) throw new Error('API failure');
         
-        const files = await response.json();
+        const rootItems = await response.json();
         
-        const imageFiles = files.filter(file => 
-          /\.(jpe?g|png|gif|webp|heic)$/i.test(file.name)
+        // 1. Separate images, directories, and note files in rootImages
+        const rootImages = rootItems.filter(item => 
+          item.type === 'file' && /\.(jpe?g|png|gif|webp|heic)$/i.test(item.name)
         );
-
-        if (imageFiles.length === 0) {
-          loader.innerHTML = '<p style="color: var(--text-muted)">Your images folder is empty.</p>';
-          return;
+        
+        const rootDirectories = rootItems.filter(item => item.type === 'dir');
+        
+        // Check for any note/subheading file in root images folder
+        const rootNoteFile = rootItems.find(item => item.type === 'file' && /\.(txt|md)$/i.test(item.name));
+        let rootSubheading = "Every (the good ones) captured second since February";
+        if (rootNoteFile) {
+          try {
+            const noteRes = await fetch(rootNoteFile.download_url);
+            if (noteRes.ok) {
+              rootSubheading = (await noteRes.text()).trim();
+            }
+          } catch (e) {
+            console.error("Error fetching root note:", e);
+          }
         }
 
-        stackContainer.removeChild(loader);
+        // Remove the loader section initially
+        if (loaderSection) {
+          parentContainer.removeChild(loaderSection);
+        }
 
-        // Render card stack (chronological order)
-        imageFiles.reverse().forEach((file) => {
-          let parsedLabel = "";
-          
-          if (file.name.toLowerCase().startsWith("label-")) {
-            const baseName = file.name.slice(6);
-            const nameWithoutExt = baseName.substring(0, baseName.lastIndexOf('.')) || baseName;
-            const cleanedText = nameWithoutExt.replace(/[-_]/g, ' ');
-            parsedLabel = cleanedText.charAt(0).toUpperCase() + cleanedText.slice(1);
+        // Render root gallery if it has images
+        if (rootImages.length > 0) {
+          const rootSection = document.getElementById('root-gallery-section');
+          if (rootSection) {
+            rootSection.style.display = 'block';
+            
+            const rootSubtitleEl = document.getElementById('root-gallery-subtitle');
+            if (rootSubtitleEl) {
+              rootSubtitleEl.textContent = rootSubheading;
+            }
+
+            const rootStack = document.getElementById('gallery-stack');
+            rootImages.reverse().forEach((file) => {
+              let parsedLabel = "";
+              if (file.name.toLowerCase().startsWith("label-")) {
+                const baseName = file.name.slice(6);
+                const nameWithoutExt = baseName.substring(0, baseName.lastIndexOf('.')) || baseName;
+                const cleanedText = nameWithoutExt.replace(/[-_]/g, ' ');
+                parsedLabel = cleanedText.charAt(0).toUpperCase() + cleanedText.slice(1);
+              }
+              createSwipeCard(rootStack, file.download_url, parsedLabel);
+            });
+
+            initSimpleStack('gallery-stack');
+            if (rootImages.length > 1) {
+              const rootControls = document.getElementById('gallery-controls-wrapper');
+              if (rootControls) rootControls.style.display = 'flex';
+            }
           }
+        } else {
+          // If no images in root, we can hide the root section template entirely
+          const rootSection = document.getElementById('root-gallery-section');
+          if (rootSection) rootSection.style.display = 'none';
+        }
 
-          createSwipeCard(file.download_url, parsedLabel);
-        });
+        // 2. Fetch and render subfolders
+        for (const dir of rootDirectories) {
+          try {
+            const dirResponse = await fetch(dir.url); // API endpoint to fetch contents of this folder
+            if (!dirResponse.ok) continue;
+            
+            const dirItems = await dirResponse.json();
+            
+            // Get image files inside this folder
+            const dirImages = dirItems.filter(item => 
+              item.type === 'file' && /\.(jpe?g|png|gif|webp|heic)$/i.test(item.name)
+            );
 
-        initSimpleStack('gallery-stack');
-        if (imageFiles.length > 1) {
-          controlsWrapper.style.display = 'flex'; 
+            // Skip if no images in this folder
+            if (dirImages.length === 0) continue;
+
+            // Search for note file inside this folder
+            const dirNoteFile = dirItems.find(item => item.type === 'file' && /\.(txt|md)$/i.test(item.name));
+            let dirSubheading = "Captured Moments"; // fallback
+            if (dirNoteFile) {
+              try {
+                const noteRes = await fetch(dirNoteFile.download_url);
+                if (noteRes.ok) {
+                  dirSubheading = (await noteRes.text()).trim();
+                }
+              } catch (e) {
+                console.error(`Error fetching note for folder ${dir.name}:`, e);
+              }
+            }
+
+            // Create dynamic section structure
+            const sectionId = `gallery-section-${dir.name.replace(/[^a-zA-Z0-9]/g, '-')}`;
+            const stackId = `gallery-stack-${dir.name.replace(/[^a-zA-Z0-9]/g, '-')}`;
+            const controlsId = `gallery-controls-${dir.name.replace(/[^a-zA-Z0-9]/g, '-')}`;
+
+            const cleanedTitle = cleanFolderName(dir.name);
+
+            const sectionHtml = `
+              <section class="stack-section gallery-section" id="${sectionId}">
+                <h2 class="section-title">${cleanedTitle}</h2>
+                <p class="section-subtitle">${dirSubheading}</p>
+                
+                <div class="stack-container" id="${stackId}">
+                  <!-- Dynamic cards go here -->
+                </div>
+
+                <!-- Deck Controls -->
+                <div class="card-controls" id="${controlsId}" style="display: none;">
+                  <button class="nav-arrow-btn" onclick="cycleStackSimple('${stackId}', -1)" aria-label="Previous image">
+                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                    </svg>
+                  </button>
+                  <button class="nav-arrow-btn" onclick="cycleStackSimple('${stackId}', 1)" aria-label="Next image">
+                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                    </svg>
+                  </button>
+                </div>
+              </section>
+            `;
+
+            // Append section HTML to parent container
+            parentContainer.insertAdjacentHTML('beforeend', sectionHtml);
+
+            // Populate cards inside the newly created stack
+            const dynamicStack = document.getElementById(stackId);
+            dirImages.reverse().forEach((file) => {
+              let parsedLabel = "";
+              if (file.name.toLowerCase().startsWith("label-")) {
+                const baseName = file.name.slice(6);
+                const nameWithoutExt = baseName.substring(0, baseName.lastIndexOf('.')) || baseName;
+                const cleanedText = nameWithoutExt.replace(/[-_]/g, ' ');
+                parsedLabel = cleanedText.charAt(0).toUpperCase() + cleanedText.slice(1);
+              }
+              createSwipeCard(dynamicStack, file.download_url, parsedLabel);
+            });
+
+            // Initialize stack slideshow & controls visibility
+            initSimpleStack(stackId);
+            if (dirImages.length > 1) {
+              const dynamicControls = document.getElementById(controlsId);
+              if (dynamicControls) dynamicControls.style.display = 'flex';
+            }
+
+          } catch (dirErr) {
+            console.error(`Failed to process directory ${dir.name}:`, dirErr);
+          }
         }
 
       } catch (error) {
-        console.warn('Network issue or offline preview. Swapping to default fallback images.');
+        console.warn('Network issue or offline preview. Swapping to default fallback images.', error);
         renderLocalFallback();
       }
     }
 
     function renderLocalFallback() {
-      const loader = document.getElementById('gallery-loader');
-      const stackContainer = document.getElementById('gallery-stack');
-      const controlsWrapper = document.getElementById('gallery-controls-wrapper');
-      if (loader) stackContainer.removeChild(loader);
+      const parentContainer = document.getElementById('galleries-container');
+      const loaderSection = document.getElementById('gallery-loader-section');
+      if (loaderSection) parentContainer.removeChild(loaderSection);
 
-      const fallbackImages = [
-        { url: 'images/feb_meeting.jpg', label: 'Where it all started' },
-        { url: 'images/march_confession.jpg', label: 'Laying it all out' },
-        { url: 'images/april_asking.jpg', label: 'Meeting the family' },
-        { url: 'images/birthday.jpg', label: '' } 
-      ];
+      const rootSection = document.getElementById('root-gallery-section');
+      if (rootSection) {
+        rootSection.style.display = 'block';
+        const rootStack = document.getElementById('gallery-stack');
+        
+        const fallbackImages = [
+          { url: 'images/feb_meeting.jpg', label: 'Where it all started' },
+          { url: 'images/march_confession.jpg', label: 'Laying it all out' },
+          { url: 'images/april_asking.jpg', label: 'Meeting the family' },
+          { url: 'images/birthday.jpg', label: '' } 
+        ];
 
-      fallbackImages.reverse().forEach(img => {
-        createSwipeCard(img.url, img.label);
-      });
+        fallbackImages.reverse().forEach(img => {
+          createSwipeCard(rootStack, img.url, img.label);
+        });
 
-      initSimpleStack('gallery-stack');
-      controlsWrapper.style.display = 'flex'; 
+        initSimpleStack('gallery-stack');
+        const rootControls = document.getElementById('gallery-controls-wrapper');
+        if (rootControls) rootControls.style.display = 'flex'; 
+      }
     }
 
-    function createSwipeCard(imageUrl, caption) {
-      const stackContainer = document.getElementById('gallery-stack');
+    function createSwipeCard(stackContainer, imageUrl, caption) {
+      if (!stackContainer) return;
       const card = document.createElement('div');
       
       const imgHtml = `<img src="${imageUrl}" alt="Memory with Cel" onload="detectImageOrientation(this)" onerror="this.parentElement.style.display='none';">`;
@@ -1424,7 +1488,6 @@
       }
       stackContainer.appendChild(card);
     }
-
     /* =========================================================================
        5. CUSTOM AUDIO PLAYER INTERFACE LOGIC
        ========================================================================= */
@@ -1496,6 +1559,20 @@
       if (content.classList.contains('expanded')) {
         arrow.style.transform = 'rotate(180deg)';
       } else {
+        arrow.style.transform = 'rotate(0deg)';
+      }
+    }
+
+    function toggleLetter() {
+      const content = document.getElementById('letter-content');
+      const arrow = document.getElementById('letter-arrow');
+      content.classList.toggle('expanded');
+      
+      if (content.classList.contains('expanded')) {
+        content.style.maxHeight = "1000px";
+        arrow.style.transform = 'rotate(180deg)';
+      } else {
+        content.style.maxHeight = "0";
         arrow.style.transform = 'rotate(0deg)';
       }
     }
@@ -1647,7 +1724,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       fetchGitHubImages();
       initSimpleStack('timeline-stack');
-      initCountdown(); // Start locked birthday countdown check
+      
     });
   </script>
 </body>
