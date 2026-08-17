@@ -1427,6 +1427,53 @@
       }
     }
 
+    function renderLocalFallback() {
+      const parentContainer = document.getElementById('galleries-container');
+      const loaderSection = document.getElementById('gallery-loader-section');
+      if (loaderSection) parentContainer.removeChild(loaderSection);
+
+      const rootSection = document.getElementById('root-gallery-section');
+      if (rootSection) {
+        rootSection.style.display = 'block';
+        const rootStack = document.getElementById('gallery-stack');
+        
+        const fallbackImages = [
+          { url: 'images/feb_meeting.jpg', label: 'Where it all started' },
+          { url: 'images/march_confession.jpg', label: 'Laying it all out' },
+          { url: 'images/april_asking.jpg', label: 'Meeting the family' },
+          { url: 'images/birthday.jpg', label: '' } 
+        ];
+
+        fallbackImages.reverse().forEach(img => {
+          createSwipeCard(rootStack, img.url, img.label);
+        });
+
+        initSimpleStack('gallery-stack');
+        const rootControls = document.getElementById('gallery-controls-wrapper');
+        if (rootControls) rootControls.style.display = 'flex'; 
+      }
+    }
+
+    function createSwipeCard(stackContainer, imageUrl, caption) {
+      if (!stackContainer) return;
+      const card = document.createElement('div');
+      
+      const imgHtml = `<img src="${imageUrl}" alt="Memory with Cel" onload="detectImageOrientation(this)" onerror="this.parentElement.style.display='none';">`;
+      
+      if (caption) {
+        card.className = 'swipe-card gallery-card has-caption';
+        card.innerHTML = `
+          ${imgHtml}
+          <div class="swipe-card-caption">${caption}</div>
+        `;
+      } else {
+        card.className = 'swipe-card gallery-card';
+        card.innerHTML = imgHtml;
+      }
+      stackContainer.appendChild(card);
+    }
+
+
         /* =========================================================================
        5. CUSTOM AUDIO PLAYER INTERFACE LOGIC
        ========================================================================= */
