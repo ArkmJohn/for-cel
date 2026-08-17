@@ -1316,32 +1316,13 @@
       const parentContainer = document.getElementById('galleries-container');
       const loaderSection = document.getElementById('gallery-loader-section');
       
-      if (GITHUB_CONFIG.username === 'YOUR_GITHUB_USERNAME' || GITHUB_CONFIG.username === '') {
-        renderLocalFallback();
-        return;
-      }
-
       try {
-        const rootItems = await fetchWithCache(`https://api.github.com/repos/${GITHUB_CONFIG.username}/${GITHUB_CONFIG.repo}/contents/${GITHUB_CONFIG.folderPath}`);
+        // Fetch static local images.json file instead of API
+        const data = await fetchWithCache('images.json');
         
-        // 1. Separate images, directories, and note files in rootImages
-        const rootImages = rootItems.filter(item => 
-          item.type === 'file' && /\.(jpe?g|png|gif|webp|heic)$/i.test(item.name)
-        );
-        
-        const rootDirectories = rootItems.filter(item => item.type === 'dir');
-        
-        // Check for any note/subheading file in root images folder
-        const rootNoteFile = rootItems.find(item => item.type === 'file' && /\.(txt|md)$/i.test(item.name));
-        let rootSubheading = "Every (the good ones) captured second since February";
-        if (rootNoteFile) {
-          try {
-            const text = await fetchWithCache(rootNoteFile.download_url, true);
-            rootSubheading = text.trim();
-          } catch (e) {
-            console.error("Error fetching root note:", e);
-          }
-        }
+        const rootImages = data.rootImages || [];
+        const rootSubheading = data.rootNote || "Every (the good ones) captured second since February";
+        const folders = data.folders || [];
 
         // Remove the loader section initially
         if (loaderSection) {
@@ -1378,148 +1359,75 @@
             }
           }
         } else {
-          // If no images in root, we can hide the root section template entirely
           const rootSection = document.getElementById('root-gallery-section');
           if (rootSection) rootSection.style.display = 'none';
         }
 
-        // 2. Fetch and render subfolders
-        for (const dir of rootDirectories) {
-          try {
-            const dirItems = await fetchWithCache(dir.url);
-            
-            // Get image files inside this folder
-            const dirImages = dirItems.filter(item => 
-              item.type === 'file' && /\.(jpe?g|png|gif|webp|heic)$/i.test(item.name)
-            );
+        // Render sub-folders
+        for (const dir of folders) {
+          const dirImages = dir.images || [];
+          if (dirImages.length === 0) continue;
 
-            // Skip if no images in this folder
-            if (dirImages.length === 0) continue;
+          const dirSubheading = dir.note || "Captured Moments";
+          const sectionId = `gallery-section-${dir.name.replace(/[^a-zA-Z0-9]/g, '-')}`;
+          const stackId = `gallery-stack-${dir.name.replace(/[^a-zA-Z0-9]/g, '-')}`;
+          const controlsId = `gallery-controls-${dir.name.replace(/[^a-zA-Z0-9]/g, '-')}`;
 
-            // Search for note file inside this folder
-            const dirNoteFile = dirItems.find(item => item.type === 'file' && /\.(txt|md)$/i.test(item.name));
-            let dirSubheading = "Captured Moments"; // fallback
-            if (dirNoteFile) {
-              try {
-                const text = await fetchWithCache(dirNoteFile.download_url, true);
-                dirSubheading = text.trim();
-              } catch (e) {
-                console.error(`Error fetching note for folder ${dir.name}:`, e);
-              }
+          const cleanedTitle = cleanFolderName(dir.name);
+
+          const sectionHtml = `
+            <section class="stack-section gallery-section" id="${sectionId}">
+              <h2 class="section-title">${cleanedTitle}</h2>
+              <p class="section-subtitle">${dirSubheading}</p>
+              
+              <div class="stack-container" id="${stackId}">
+                <!-- Dynamic cards go here -->
+              </div>
+
+              <!-- Deck Controls -->
+              <div class="card-controls" id="${controlsId}" style="display: none;">
+                <button class="nav-arrow-btn" onclick="cycleStackSimple('${stackId}', -1)" aria-label="Previous image">
+                  <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                  </svg>
+                </button>
+                <button class="nav-arrow-btn" onclick="cycleStackSimple('${stackId}', 1)" aria-label="Next image">
+                  <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                  </svg>
+                </button>
+              </div>
+            </section>
+          `;
+
+          parentContainer.insertAdjacentHTML('beforeend', sectionHtml);
+
+          const dynamicStack = document.getElementById(stackId);
+          dirImages.reverse().forEach((file) => {
+            let parsedLabel = "";
+            if (file.name.toLowerCase().startsWith("label-")) {
+              const baseName = file.name.slice(6);
+              const nameWithoutExt = baseName.substring(0, baseName.lastIndexOf('.')) || baseName;
+              const cleanedText = nameWithoutExt.replace(/[-_]/g, ' ');
+              parsedLabel = cleanedText.charAt(0).toUpperCase() + cleanedText.slice(1);
             }
+            createSwipeCard(dynamicStack, file.download_url, parsedLabel);
+          });
 
-            // Create dynamic section structure
-            const sectionId = `gallery-section-${dir.name.replace(/[^a-zA-Z0-9]/g, '-')}`;
-            const stackId = `gallery-stack-${dir.name.replace(/[^a-zA-Z0-9]/g, '-')}`;
-            const controlsId = `gallery-controls-${dir.name.replace(/[^a-zA-Z0-9]/g, '-')}`;
-
-            const cleanedTitle = cleanFolderName(dir.name);
-
-            const sectionHtml = `
-              <section class="stack-section gallery-section" id="${sectionId}">
-                <h2 class="section-title">${cleanedTitle}</h2>
-                <p class="section-subtitle">${dirSubheading}</p>
-                
-                <div class="stack-container" id="${stackId}">
-                  <!-- Dynamic cards go here -->
-                </div>
-
-                <!-- Deck Controls -->
-                <div class="card-controls" id="${controlsId}" style="display: none;">
-                  <button class="nav-arrow-btn" onclick="cycleStackSimple('${stackId}', -1)" aria-label="Previous image">
-                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                    </svg>
-                  </button>
-                  <button class="nav-arrow-btn" onclick="cycleStackSimple('${stackId}', 1)" aria-label="Next image">
-                    <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                    </svg>
-                  </button>
-                </div>
-              </section>
-            `;
-
-            // Append section HTML to parent container
-            parentContainer.insertAdjacentHTML('beforeend', sectionHtml);
-
-            // Populate cards inside the newly created stack
-            const dynamicStack = document.getElementById(stackId);
-            dirImages.reverse().forEach((file) => {
-              let parsedLabel = "";
-              if (file.name.toLowerCase().startsWith("label-")) {
-                const baseName = file.name.slice(6);
-                const nameWithoutExt = baseName.substring(0, baseName.lastIndexOf('.')) || baseName;
-                const cleanedText = nameWithoutExt.replace(/[-_]/g, ' ');
-                parsedLabel = cleanedText.charAt(0).toUpperCase() + cleanedText.slice(1);
-              }
-              createSwipeCard(dynamicStack, file.download_url, parsedLabel);
-            });
-
-            // Initialize stack slideshow & controls visibility
-            initSimpleStack(stackId);
-            if (dirImages.length > 1) {
-              const dynamicControls = document.getElementById(controlsId);
-              if (dynamicControls) dynamicControls.style.display = 'flex';
-            }
-
-          } catch (dirErr) {
-            console.error(`Failed to process directory ${dir.name}:`, dirErr);
+          initSimpleStack(stackId);
+          if (dirImages.length > 1) {
+            const dynamicControls = document.getElementById(controlsId);
+            if (dynamicControls) dynamicControls.style.display = 'flex';
           }
         }
 
       } catch (error) {
-        console.warn('Network issue or offline preview. Swapping to default fallback images.', error);
+        console.warn('Fallback triggered.', error);
         renderLocalFallback();
       }
     }
 
-    function renderLocalFallback() {
-      const parentContainer = document.getElementById('galleries-container');
-      const loaderSection = document.getElementById('gallery-loader-section');
-      if (loaderSection) parentContainer.removeChild(loaderSection);
-
-      const rootSection = document.getElementById('root-gallery-section');
-      if (rootSection) {
-        rootSection.style.display = 'block';
-        const rootStack = document.getElementById('gallery-stack');
-        
-        const fallbackImages = [
-          { url: 'images/feb_meeting.jpg', label: 'Where it all started' },
-          { url: 'images/march_confession.jpg', label: 'Laying it all out' },
-          { url: 'images/april_asking.jpg', label: 'Meeting the family' },
-          { url: 'images/birthday.jpg', label: '' } 
-        ];
-
-        fallbackImages.reverse().forEach(img => {
-          createSwipeCard(rootStack, img.url, img.label);
-        });
-
-        initSimpleStack('gallery-stack');
-        const rootControls = document.getElementById('gallery-controls-wrapper');
-        if (rootControls) rootControls.style.display = 'flex'; 
-      }
-    }
-
-    function createSwipeCard(stackContainer, imageUrl, caption) {
-      if (!stackContainer) return;
-      const card = document.createElement('div');
-      
-      const imgHtml = `<img src="${imageUrl}" alt="Memory with Cel" onload="detectImageOrientation(this)" onerror="this.parentElement.style.display='none';">`;
-      
-      if (caption) {
-        card.className = 'swipe-card gallery-card has-caption';
-        card.innerHTML = `
-          ${imgHtml}
-          <div class="swipe-card-caption">${caption}</div>
-        `;
-      } else {
-        card.className = 'swipe-card gallery-card';
-        card.innerHTML = imgHtml;
-      }
-      stackContainer.appendChild(card);
-    }
-    /* =========================================================================
+        /* =========================================================================
        5. CUSTOM AUDIO PLAYER INTERFACE LOGIC
        ========================================================================= */
     const audio = document.getElementById('love-audio');

@@ -1,0 +1,99 @@
+name: Generate Images JSON
+
+on:
+  push:
+    paths:
+      - 'images/**' # Run only when files inside images/ are added, changed, or deleted
+
+permissions:
+  contents: write # Allows GitHub Actions to push changes back to your repository
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Generate images.json
+        shell: python
+        run: |
+          import os
+          import json
+
+          images_dir = "images"
+          allowed_exts = (".png", ".jpg", ".jpeg", ".gif", ".webp", ".heic")
+
+          root_items = os.listdir(images_dir) if os.path.exists(images_dir) else []
+          root_images = []
+          root_note = "Every (the good ones) captured second since February"
+          folders = []
+
+          # Sort alphabetically so files are organized predictably
+          for item in sorted(root_items):
+              full_path = os.path.join(images_dir, item)
+              if os.path.isfile(full_path):
+                  if item.lower().endswith(allowed_exts):
+                      root_images.append({
+                          "name": item,
+                          "download_url": f"images/{item}"
+                      })
+                  elif item.lower() in ("note.txt", "note.md", "subheading.txt"):
+                      try:
+                          with open(full_path, "r", encoding="utf-8") as f:
+                              root_note = f.read().strip()
+                      except Exception as e:
+                          print(f"Error reading root note: {e}")
+              elif os.path.isdir(full_path):
+                  subfolder_name = item
+                  sub_items = os.listdir(full_path)
+                  sub_images = []
+                  sub_note = "Captured Moments"
+                  
+                  for sub_item in sorted(sub_items):
+                      sub_full_path = os.path.join(full_path, sub_item)
+                      if os.path.isfile(sub_full_path):
+                          if sub_item.lower().endswith(allowed_exts):
+                              sub_images.append({
+                                  "name": sub_item,
+                                  "download_url": f"images/{subfolder_name}/{sub_item}"
+                              })
+                          elif sub_item.lower() in ("note.txt", "note.md", "subheading.txt"):
+                              try:
+                                  with open(sub_full_path, "r", encoding="utf-8") as f:
+                                      sub_note = f.read().strip()
+                              except Exception as e:
+                                  print(f"Error reading sub note for {subfolder_name}: {e}")
+                  
+                  if sub_images:
+                      folders.append({
+                          "name": subfolder_name,
+                          "note": sub_note,
+                          "images": sub_images
+                      })
+
+          data = {
+              "rootImages": root_images,
+              "rootNote": root_note,
+              "folders": folders
+          }
+
+          with open("images.json", "w", encoding="utf-8") as f:
+              json.dump(data, f, indent=2, ensure_ascii=False)
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add images.json
+          if git diff --staged --quiet; then
+            echo "No changes in images.json to commit."
+          else
+            git commit -m "chore: auto-update images.json"
+            git push
+          fi
