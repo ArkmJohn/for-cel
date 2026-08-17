@@ -2,11 +2,13 @@ name: Generate Images JSON
 
 on:
   push:
-    paths:
-      - 'images/**' # Run only when files inside images/ are added, changed, or deleted
+    branches:
+      - main
+      - master # Triggers on any code or image pushes to main/master
+  workflow_dispatch: # Adds a magical "Run workflow" button in GitHub Actions to run it manually!
 
 permissions:
-  contents: write # Allows GitHub Actions to push changes back to your repository
+  contents: write
 
 jobs:
   build:
@@ -34,7 +36,6 @@ jobs:
           root_note = "Every (the good ones) captured second since February"
           folders = []
 
-          # Sort alphabetically so files are organized predictably
           for item in sorted(root_items):
               full_path = os.path.join(images_dir, item)
               if os.path.isfile(full_path):
